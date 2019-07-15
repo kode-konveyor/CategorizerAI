@@ -1,20 +1,21 @@
 #coding=utf-8
 import unittest
-from dbtest import ConnectionStubProvider, DbTestHelper
 from springboot.Autowired import Autowired
+from dbtest.DbTestData import DbTestData
 
-updateService = Autowired('updateService')
+updateDBService = Autowired('updateDBService')
 config = Autowired('config')
 
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.fakeConnection = ConnectionStubProvider.allStubs()
-        updateService.updateRow(
+        self.dbTestData = DbTestData()
+        self.fakeConnection = self.dbTestData.connection
+        updateDBService.updateRow(
             self.fakeConnection,
-            DbTestHelper.oidAsString,
-            DbTestHelper.fetched_row,
-            DbTestHelper.choice)
+            self.dbTestData.oidAsString,
+            self.dbTestData.fetched_row,
+            self.dbTestData.choice)
         
     def test_closes_the_connection(self):
         self.fakeConnection.cursor.assert_called_once()
@@ -22,6 +23,6 @@ class Test(unittest.TestCase):
     def test_executes_the_formatted_update_query(self):
         argsList = self.fakeConnection.cursor.execute.call_args_list
         self.assertEqual(1, len(argsList))
-        self.assertEquals(
-            DbTestHelper.formattedUpdateQuery,
+        self.assertEqual(
+            self.dbTestData.formattedUpdateQuery,
             argsList[0][0][0])

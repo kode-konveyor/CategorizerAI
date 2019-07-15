@@ -5,7 +5,7 @@ from springboot.Service import Service
 config = Autowired('config')
 rowProviderService = Autowired('rowProviderService')
 transactionDisplayService = Autowired('transactionDisplayService')
-updateService = Autowired('updateService')
+updateDBService = Autowired('updateDBService')
 choiceAskService = Autowired('choiceAskService')
 numericConverterService = Autowired('numericConverterService')
 
@@ -20,7 +20,7 @@ class RowUpdateService:
         options = self.prepareProbableAnswers(categories, answers)
         choice = self.getChoiceFromUser(options)
         if choice is not None:
-            updateService.updateRow(connection, row, oidAsStr, choice)
+            updateDBService.updateRow(connection, row, oidAsStr, choice)
 
     def prepareProbableAnswers(self, categories, answers):
         index = 1

@@ -8,4 +8,6 @@ class Service(object):
             providers[serviceId] = []
         providers[serviceId].append(klass)
         self.wrapped = klass
+    def __call__(self):
+        return self.wrapped()
 

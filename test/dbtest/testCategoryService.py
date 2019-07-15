@@ -1,18 +1,20 @@
 #coding=utf-8
 import unittest
-from dbtest import ConnectionStubProvider, DbTestHelper
 from springboot.Autowired import Autowired
+from dbtest.DbTestData import DbTestData
 
 categoryService = Autowired('categoryService')
 config = Autowired('config')
+
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.fakeConnection = ConnectionStubProvider.allStubs()
+        self.dbTestData = DbTestData()
+        self.fakeConnection = self.dbTestData.connection
         self.categories = categoryService.fetchCategories(self.fakeConnection)
 
     def test_returns_a_dict_keyed_with_the_element_ID_COLUMN_POSITION_IN_CATEGORIES_TABLE(self):
-        firstRow = DbTestHelper.all_rows[0]
+        firstRow = self.dbTestData.all_rows[0]
         firstRowKey = firstRow[config.ID_COLUMN_POSITION_IN_CATEGORIES_TABLE]
         self.assertEqual(
             firstRow,
@@ -21,7 +23,7 @@ class Test(unittest.TestCase):
 
     def test_the_returned_dict_contains_elements_for_all_different_keys(self):
         self.assertEqual(
-            len(DbTestHelper.all_rows),
+            len(self.dbTestData.all_rows),
             len(self.categories)
             )
 

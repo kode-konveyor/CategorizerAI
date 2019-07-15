@@ -10,6 +10,12 @@ class Autowired(object):
         if name in ['provider', '__getattribute__']:
             return object.__getattribute__(self,name)
         return getattr(self.provider, name)
+    
+    def __setattribute__(self, name, value):
+        if name in ['provider']:
+            return object.__setattribute__(self,name, value)
+        setattr(self.provider, name, value)
+
 
     @staticmethod
     def wire():

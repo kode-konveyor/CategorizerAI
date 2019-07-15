@@ -5,7 +5,7 @@ import types
 config = Autowired('config')
 
 @Service
-class UpdateService:
+class UpdateDBService:
     
     def updateRow(self, connection, oid, row, choice):
         table = config.figureOutTable(row)

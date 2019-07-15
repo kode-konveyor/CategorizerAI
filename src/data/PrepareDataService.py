@@ -23,3 +23,4 @@ class PrepareDataService:
     def calculateMaximumStringLength(self, trainSet, problemSet):
         max_length = max([len(s) for s in trainSet.loc[:, config.TRAINING_SET_INPUT_COLUMN]])
         max_length = max([max_length]+[len(s) for s in problemSet.loc[:, config.PROBLEM_SET_INPUT_COLUMN]])
+        return max_length
