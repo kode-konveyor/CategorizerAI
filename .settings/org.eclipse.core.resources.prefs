@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+encoding//src/CategorizerService.py=utf-8
+encoding//test/aitest/testAccuracyCheckService.py=utf-8
+encoding//test/aitest/testNeuralNetBuilderService.py=utf-8
+encoding//test/aitest/testNeuralNetTrainerService.py=utf-8
+encoding//test/datatest/DataTestHelper.py=utf-8
+encoding//test/datatest/testNumericConverterService.py=utf-8
+encoding//test/dbtest/testCategoryService.py=utf-8
+encoding//test/dbtest/testConnectionFactory.py=utf-8
+encoding//test/dbtest/testRowProviderService.py=utf-8
+encoding//test/dbtest/testUpdateService.py=utf-8
