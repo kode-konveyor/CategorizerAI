@@ -1,6 +1,6 @@
 #coding=utf-8
 import unittest
-from categorizerai.springboot.Autowired import Autowired
+from categorizerai.winterboot.Autowired import Autowired
 from aitest.AiTestData import AITestData
 import TestHelper
 

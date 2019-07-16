@@ -1,4 +1,4 @@
-from categorizerai.springboot.SpringBoot import addConsumer, wireOneService
+from categorizerai.winterboot.WinterBoot import addConsumer, wireOneService
 
 class Autowired(object):
 

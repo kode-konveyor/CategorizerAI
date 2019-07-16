@@ -1,5 +1,5 @@
 import unittest
-from categorizerai.springboot.Autowired import Autowired
+from categorizerai.winterboot.Autowired import Autowired
 import TestHelper
 from updatetest.UpdateTestData import UpdateTestData
 from categorizerai.ui import ChoiceAskService

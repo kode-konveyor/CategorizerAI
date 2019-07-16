@@ -1,4 +1,4 @@
-from categorizerai.springboot.SpringBoot import addProvider
+from categorizerai.winterboot.WinterBoot import addProvider
 
 class Service(object):
 

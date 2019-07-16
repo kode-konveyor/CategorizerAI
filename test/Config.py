@@ -1,5 +1,5 @@
 import psycopg2
-from categorizerai.springboot.Service import Service
+from categorizerai.winterboot.Service import Service
 
 @Service
 class Config(object):

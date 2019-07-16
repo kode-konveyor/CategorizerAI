@@ -1,7 +1,7 @@
 
 import unittest
-from categorizerai.springboot.SpringBoot import providers
-from springboottest.ExampleService import ExampleService
+from categorizerai.winterboot.WinterBoot import providers
+from winterboottest.ExampleService import ExampleService
 
 
 class Test(unittest.TestCase):

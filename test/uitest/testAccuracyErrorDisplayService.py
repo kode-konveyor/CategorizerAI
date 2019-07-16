@@ -1,5 +1,5 @@
 import unittest
-from categorizerai.springboot.Autowired import Autowired
+from categorizerai.winterboot.Autowired import Autowired
 import TestHelper
 from categorizerai.ui import AccuracyErrorDisplayService
 

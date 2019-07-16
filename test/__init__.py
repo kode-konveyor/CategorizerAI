@@ -1,5 +1,5 @@
 import Config
 print("tests are loading")
-import categorizerai.springboot.SpringBoot
+import categorizerai.winterboot.WinterBoot
 
-categorizerai.springboot.SpringBoot.autoload(categorizerai)
+categorizerai.winterboot.WinterBoot.autoload(categorizerai)

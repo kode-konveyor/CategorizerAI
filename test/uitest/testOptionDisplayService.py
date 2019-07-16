@@ -1,5 +1,5 @@
 import unittest
-from categorizerai.springboot.Autowired import Autowired
+from categorizerai.winterboot.Autowired import Autowired
 from updatetest.UpdateTestData import UpdateTestData
 import TestHelper
 

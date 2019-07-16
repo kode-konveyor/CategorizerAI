@@ -1,4 +1,4 @@
-from categorizerai.springboot.Service import Service
+from categorizerai.winterboot.Service import Service
 
 ACCURACY_ERROR_MESSAGE = "Accuracy is too small, exiting. Try again."
 

@@ -1,6 +1,6 @@
 import unittest
-from categorizerai.springboot.Autowired import Autowired
-from categorizerai.springboot.MockedService import MockedService
+from categorizerai.winterboot.Autowired import Autowired
+from categorizerai.winterboot.MockedService import MockedService
 from datatest.DataTestData import DataTestData
 from dbtest.DbTestData import DbTestData
 from updatetest.UpdateTestData import UpdateTestData

@@ -1,8 +1,8 @@
 import unittest
-from categorizerai.springboot.Autowired import Autowired
+from categorizerai.winterboot.Autowired import Autowired
 from updatetest.UpdateTestData import UpdateTestData
 from uitest import ChoiceObtainerTestStubs
-from categorizerai.springboot.MockedService import MockedService
+from categorizerai.winterboot.MockedService import MockedService
 
 choiceObtainerService = Autowired('choiceObtainerService')
 

@@ -1,6 +1,6 @@
 import unittest
-from categorizerai.springboot.SpringBoot import consumers
-from categorizerai.springboot.Autowired import Autowired
+from categorizerai.winterboot.WinterBoot import consumers
+from categorizerai.winterboot.Autowired import Autowired
 
 class Test(unittest.TestCase):
 

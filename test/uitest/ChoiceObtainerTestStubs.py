@@ -1,4 +1,4 @@
-from categorizerai.springboot.Autowired import Autowired
+from categorizerai.winterboot.Autowired import Autowired
 
 def choiceObtainerStubs(choice):
     choiceAskService = Autowired('choiceAskService')

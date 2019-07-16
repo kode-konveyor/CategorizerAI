@@ -1,6 +1,6 @@
 import types
-from categorizerai.springboot.Autowired import Autowired
-from categorizerai.springboot.Service import Service
+from categorizerai.winterboot.Autowired import Autowired
+from categorizerai.winterboot.Service import Service
 
 config = Autowired('config')
 numericConverterService = Autowired('numericConverterService')
