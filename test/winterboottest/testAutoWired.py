@@ -1,6 +1,6 @@
 import unittest
-from categorizerai.winterboot.WinterBoot import consumers
-from categorizerai.winterboot.Autowired import Autowired
+from winterboot.WinterBoot import consumers
+from winterboot.Autowired import Autowired
 
 class Test(unittest.TestCase):
 

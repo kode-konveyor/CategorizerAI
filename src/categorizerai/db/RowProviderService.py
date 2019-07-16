@@ -1,5 +1,5 @@
-from categorizerai.winterboot.Autowired import Autowired
-from categorizerai.winterboot.Service import Service
+from winterboot.Autowired import Autowired
+from winterboot.Service import Service
 
 config = Autowired('config')
 

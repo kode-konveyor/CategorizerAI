@@ -1,5 +1,5 @@
 import numpy
-from categorizerai.winterboot.Service import Service
+from winterboot.Service import Service
 
 @Service
 class NumericConverterService:

@@ -1,6 +1,6 @@
 
 import unittest
-from categorizerai.winterboot.WinterBoot import providers
+from winterboot.WinterBoot import providers
 from winterboottest.ExampleService import ExampleService
 
 

@@ -1,4 +1,4 @@
-from categorizerai.winterboot.Service import Service
+from winterboot.Service import Service
 
 PROMPT = "choice: "
 
