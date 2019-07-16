@@ -1,24 +1,17 @@
 #coding=utf-8
 import unittest
-from springboot.Autowired import Autowired
+from categorizerai.springboot.Autowired import Autowired
 from datatest.DataTestData import DataTestData
 
 numericConverterService = Autowired('numericConverterService')
-
 
 class Test(unittest.TestCase):
 
     def setUp(self):
         self.testData = DataTestData()
-        Autowired.wire()
         self.result = numericConverterService.createNumericArrayFromTextArray(
             self.testData.INPUT_ARRAY,self.testData.MAX_LENGTH)
 
-    def test_integer_is_interpreted_correctly_by_num(self):
-        self.assertEqual( 3 , numericConverterService.num("3"))
-
-    def test_noninteger_is_interpreted_correctly_by_num(self):
-        self.assertEqual( None , numericConverterService.num("foo"))
 
     def test_createNumericArrayFromTextArray_creates_a_line_for_each_string(self):
         self.assertEqual( 3 , len(self.result))

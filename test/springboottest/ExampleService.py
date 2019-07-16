@@ -1,4 +1,4 @@
-from springboot.Service import Service
+from categorizerai.springboot.Service import Service
 
 @Service
 class ExampleService(object):

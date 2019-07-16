@@ -1,5 +1,5 @@
 import psycopg2
-from springboot.Service import Service
+from categorizerai.springboot.Service import Service
 
 @Service
 class Config(object):
@@ -27,7 +27,8 @@ class Config(object):
     PROBLEM_SET_ID_COLUMN = "id"
     PROBLEM_SET_INPUT_COLUMN = "comment"
     PROBLEM_SET_COLUMNS = [PROBLEM_SET_ID_COLUMN, PROBLEM_SET_INPUT_COLUMN]
-    
+    CHOICE_FORMAT_REGEX = "\S+,\S+"
+    OPTION_DISPLAY_FORMAT = "\t {0}: {1} {2}"
 
     def figureOutTable(self, row):
         return "transactions"

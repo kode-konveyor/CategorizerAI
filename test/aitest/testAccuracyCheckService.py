@@ -1,8 +1,9 @@
 #coding=utf-8
 import unittest
-from springboot.Autowired import Autowired
-from springboot.MockedService import MockedService
+from categorizerai.springboot.Autowired import Autowired
+from categorizerai.springboot.MockedService import MockedService
 from aitest.AiTestData import AITestData
+import TestHelper
 
 accuracyCheckService = Autowired('accuracyCheckService')
 config = Autowired('config')
@@ -20,13 +21,15 @@ class Test(unittest.TestCase):
 
     def test_checkAccuracy_displays_accuracy(self):
         self.runTestWithAccuracy(self.aiTestData.ACCURACY)
-        callArguments = self.displayAccuracyService.displayAccuracy.call_args_list
-        self.assertEqual(self.aiTestData.ACCURACY, callArguments[0][0][0])
+        TestHelper.assertCallParameter(
+            self.aiTestData.ACCURACY,
+            self.displayAccuracyService.displayAccuracy, 0)
 
     def test_checkAccuracy_exits_when_accuracy_is_low(self):
         self.runTestWithAccuracy(self.aiTestData.LOW_ACCURACY)
-        callArguments = self.sysExit.call_args_list
-        self.assertEqual(-1, callArguments[0][0][0])
+        TestHelper.assertCallParameter(
+            -1,
+            self.sysExit, 0)
 
     def test_checkAccuracy_displays_accuracy_error_message_when_accuracy_is_low(self):
         self.runTestWithAccuracy(self.aiTestData.LOW_ACCURACY)

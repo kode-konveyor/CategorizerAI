@@ -1,12 +1,5 @@
-import ai.AccuracyCheckService
-import ai.NeuralNetTrainerService
-import ai.NeuralNetBuilderService
-import data.NumericConverterService
-import data.PrepareDataService
-import db.RowProviderService
-import db.ConnectionFactory
-import db.CategoryService
-import db.UpdateDBService
-import ui.TransactionDisplayService
-import update.RowUpdateService
 import Config
+print("tests are loading")
+import categorizerai.springboot.SpringBoot
+
+categorizerai.springboot.SpringBoot.autoload(categorizerai)

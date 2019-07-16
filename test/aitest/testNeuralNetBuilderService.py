@@ -1,9 +1,10 @@
 #coding=utf-8
 import unittest
-from springboot.Autowired import Autowired
+from categorizerai.springboot.Autowired import Autowired
 import keras
 import tensorflow
 from datatest.DataTestData import DataTestData
+import TestHelper
 
 neuralNetBuilderService = Autowired('neuralNetBuilderService')
 config = Autowired('config')
@@ -14,7 +15,7 @@ class Test(unittest.TestCase):
         self.testData = DataTestData()
         with unittest.mock.patch('keras.Sequential') as self.model:
             self.result = neuralNetBuilderService.buildNeuralNet(self.testData.MAX_LENGTH, self.testData.OUTPUT_NEURONS )
-        self.firstCallList = self.model.call_args_list[0][0][0]
+        self.firstCallList = TestHelper.callArgument(self.model, 0)
 
     def test_buildNeuralNet_builds_a_Sequential_model(self):
         self.model.assert_called_once()

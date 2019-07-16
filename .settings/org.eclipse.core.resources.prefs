@@ -1,5 +1,5 @@
 eclipse.preferences.version=1
-encoding//src/CategorizerService.py=utf-8
+encoding//src/categorizerai/CategorizerService.py=utf-8
 encoding//test/aitest/testAccuracyCheckService.py=utf-8
 encoding//test/aitest/testNeuralNetBuilderService.py=utf-8
 encoding//test/aitest/testNeuralNetTrainerService.py=utf-8

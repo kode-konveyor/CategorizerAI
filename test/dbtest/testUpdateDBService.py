@@ -1,7 +1,8 @@
 #coding=utf-8
 import unittest
-from springboot.Autowired import Autowired
+from categorizerai.springboot.Autowired import Autowired
 from dbtest.DbTestData import DbTestData
+import TestHelper
 
 updateDBService = Autowired('updateDBService')
 config = Autowired('config')
@@ -21,8 +22,5 @@ class Test(unittest.TestCase):
         self.fakeConnection.cursor.assert_called_once()
 
     def test_executes_the_formatted_update_query(self):
-        argsList = self.fakeConnection.cursor.execute.call_args_list
-        self.assertEqual(1, len(argsList))
-        self.assertEqual(
-            self.dbTestData.formattedUpdateQuery,
-            argsList[0][0][0])
+        TestHelper.assertCallParameter(self.dbTestData.formattedUpdateQuery, self.fakeConnection.cursor.execute, 0)
+        self.fakeConnection.cursor.execute.assert_called_once()

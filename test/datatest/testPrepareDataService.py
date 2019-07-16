@@ -1,6 +1,6 @@
 import unittest
-from springboot.Autowired import Autowired
-from springboot.MockedService import MockedService
+from categorizerai.springboot.Autowired import Autowired
+from categorizerai.springboot.MockedService import MockedService
 import numpy
 from datatest.DataTestData import DataTestData
 

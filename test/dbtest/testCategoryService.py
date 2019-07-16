@@ -1,7 +1,8 @@
 #coding=utf-8
 import unittest
-from springboot.Autowired import Autowired
+from categorizerai.springboot.Autowired import Autowired
 from dbtest.DbTestData import DbTestData
+import TestHelper
 
 categoryService = Autowired('categoryService')
 config = Autowired('config')
@@ -31,6 +32,5 @@ class Test(unittest.TestCase):
         self.fakeConnection.cursor.assert_called_once()
 
     def test_executes_SQL_TO_OBTAIN_CATEGORIES(self):
-        argsList = self.fakeConnection.cursor.execute.call_args_list
-        self.assertEqual(1, len(argsList))
-        self.assertEqual(config.SQL_TO_OBTAIN_CATEGORIES, argsList[0][0][0])
+        self.fakeConnection.cursor.execute.assert_called_once()
+        TestHelper.assertCallParameter(config.SQL_TO_OBTAIN_CATEGORIES, self.fakeConnection.cursor.execute, 0)

@@ -1,17 +1,16 @@
 import unittest
-from springboot.Autowired import Autowired
-from uitest.UITestBase import UITestBase
+from categorizerai.springboot.Autowired import Autowired
 from dbtest.DbTestData import DbTestData
+import TestHelper
 
 transactionDisplayService = Autowired("transactionDisplayService")
-class Test(UITestBase):
+class Test(unittest.TestCase):
 
     def testdisplayTransaction_prints_the_transaction(self):
         dbTestData = DbTestData()
-        Autowired.wire()
         with unittest.mock.patch('sys.stdout') as mockedStdout:
             transactionDisplayService.displayTransaction(dbTestData.fetched_row)
-        self.assertPrintedOn(mockedStdout, dbTestData.fetched_row)
+        TestHelper.assertPrintedOn(mockedStdout, dbTestData.fetched_row)
 
 
 if __name__ == "__main__":

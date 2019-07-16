@@ -1,7 +1,8 @@
 #coding=utf-8
 import unittest
-from springboot.Autowired import Autowired
+from categorizerai.springboot.Autowired import Autowired
 from aitest.AiTestData import AITestData
+import TestHelper
 
 neuralNetTrainerService = Autowired('neuralNetTrainerService')
 config = Autowired('config')
@@ -16,9 +17,8 @@ class Test(unittest.TestCase):
             self.aiTestData.TRAIN_VALUES,
             self.aiTestData.TRAIN_RESULTS,
             self.model)
-        self.compileCallKwargs = self.model.compile.call_args_list[0][1]
-        self.fitCallArgs = self.model.fit.call_args_list[0][0]
-        self.fitCallKwargs = self.model.fit.call_args_list[0][1]
+        self.compileCallKwargs = TestHelper.callKwArgument(self.model.compile)
+        self.fitCallKwargs = TestHelper.callKwArgument(self.model.fit)
 
     def test_trainNeuralNet_compiles_the_model(self):
         self.model.compile.assert_called_once()
@@ -39,10 +39,10 @@ class Test(unittest.TestCase):
         self.model.fit.assert_called_once()
 
     def test_fit_uses_train_values(self):
-        self.assertEqual(self.aiTestData.TRAIN_VALUES, self.fitCallArgs[0])
+        self.assertEqual(self.aiTestData.TRAIN_VALUES, TestHelper.callArgument(self.model.fit,0))
 
     def test_fit_uses_train_results(self):
-        self.assertEqual(self.aiTestData.TRAIN_RESULTS, self.fitCallArgs[1])
+        self.assertEqual(self.aiTestData.TRAIN_RESULTS, TestHelper.callArgument(self.model.fit,1))
 
     def test_batch_size_is_BATCH_SIZE(self):
         self.assertEqual(config.BATCH_SIZE, self.fitCallKwargs['batch_size'])

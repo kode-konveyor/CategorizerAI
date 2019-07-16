@@ -1,8 +1,9 @@
 #coding=utf-8
 import unittest
 import re
-from springboot.Autowired import Autowired
+from categorizerai.springboot.Autowired import Autowired
 from dbtest.DbTestData import DbTestData
+import TestHelper
 
 rowProviderService = Autowired('rowProviderService')
 class Test(unittest.TestCase):
@@ -10,17 +11,15 @@ class Test(unittest.TestCase):
     def setUp(self):
         self.dbTestData = DbTestData()
         self.fakeConnection = self.dbTestData.connection
+        self.row = rowProviderService.getRowByOid(self.fakeConnection, self.dbTestData.oidAsString)
         
     def test_returns_fetched_row(self):
-        row = rowProviderService.getRowByOid(self.fakeConnection, self.dbTestData.oidAsString)
-        self.assertEqual(self.dbTestData.fetched_row, row)
+        self.assertEqual(self.dbTestData.fetched_row, self.row)
 
     def test_closes_the_connection(self):
-        rowProviderService.getRowByOid(self.fakeConnection, self.dbTestData.oidAsString)
         self.fakeConnection.cursor.assert_called_once()
 
     def test_executes_a_string_containing_the_oid(self):
-        rowProviderService.getRowByOid(self.fakeConnection, self.dbTestData.oidAsString)
-        argsList = self.fakeConnection.cursor.execute.call_args_list
-        self.assertEqual(1, len(argsList))
-        self.assertTrue(re.search(self.dbTestData.oidAsString, str(argsList[0])))
+        self.fakeConnection.cursor.execute.assert_called_once()
+        firstArgument = TestHelper.callArgument(self.fakeConnection.cursor.execute, 0)
+        self.assertTrue(re.search(self.dbTestData.oidAsString, str(firstArgument)))
