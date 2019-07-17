@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #coding=utf-8
-import pandas as pd
+import pandas
 from winterboot.Autowired import Autowired
 from winterboot.Service import Service
 
@@ -14,8 +14,8 @@ updateDBService = Autowired('updateDBService')
 @Service
 class CategorizerService:
     def categorize(self):
-        trainSet = pd.read_csv(config.TRAINING_SET_FILE,'\t',encoding='utf-8',names=config.TRAINING_SET_COLUMNS)
-        problemSet = pd.read_csv(config.PROBLEM_SET_FILE,'\t',encoding='utf-8',names=config.PROBLEM_SET_COLUMNS)
+        trainSet = pandas.read_csv(config.TRAINING_SET_FILE,'\t',encoding='utf-8',names=config.TRAINING_SET_COLUMNS)
+        problemSet = pandas.read_csv(config.PROBLEM_SET_FILE,'\t',encoding='utf-8',names=config.PROBLEM_SET_COLUMNS)
         
         data = prepareDataService.prepareData(trainSet, problemSet)
         model = neuralNetBuilderService.buildNeuralNet(data.max_length, data.numberOfOutputNeurons)

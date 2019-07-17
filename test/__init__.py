@@ -1,6 +1,6 @@
-from categorizeraitest import Config
-print("tests are loading")
-import winterboot.WinterBoot
+import winterboot
+from winterboot.WinterBoot import autoload
 import categorizerai
+from categorizeraitest import Config
 
-winterboot.WinterBoot.autoload(categorizerai)
+autoload(categorizerai)

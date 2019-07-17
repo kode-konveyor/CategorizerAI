@@ -2,9 +2,12 @@ from unittest.mock import MagicMock
 from winterboot import WinterBoot
 
 class MockedService(object):
-    def __init__(self, serviceName):
+    def __init__(self, serviceName, instance = None):
         self.serviceName = serviceName
-        self.mock = MagicMock()
+        if instance is None:
+            self.mock = MagicMock()
+        else:
+            self.mock = instance
         self.orig = WinterBoot.providers[serviceName][0]
         WinterBoot.providers[serviceName][0]=self.mock
         WinterBoot.wireOneService(serviceName)

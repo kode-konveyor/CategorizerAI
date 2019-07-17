@@ -1,6 +1,7 @@
 import psycopg2
 from winterboot.Service import Service
-from _io import StringIO
+import sys
+from os.path import dirname
 
 @Service
 class Config(object):
@@ -17,21 +18,14 @@ class Config(object):
     MIN_PROBABILITY=0.1
     MIN_ACCURACY=0.7
     ID_COLUMN_POSITION_IN_CATEGORIES_TABLE = 0
-    
-    TRAIN_SET_DATA = """1\tblabla\t2
-    2\tbeea\t3
-    4\tbeaa\t3
-    3\tbaz\t1"""
-    PROBLEM_SET_DATA = """4\tboo
-    5\tfefefe"""
-
-    TRAINING_SET_FILE = StringIO(TRAIN_SET_DATA) #'training_set.csv'
+    dirName = dirname(sys.modules[__name__].__file__)
+    TRAINING_SET_FILE = dirName+'/train_set.csv'
+    PROBLEM_SET_FILE = dirName+'/problem_set.csv'
     TRAINING_SET_ID_COLUMN = "id"
     TRAINING_SET_INPUT_COLUMN = "comment"
     TRAINING_SET_OUTPUT_COLUMN = "category"
     TRAINING_SET_COLUMNS = [TRAINING_SET_ID_COLUMN, TRAINING_SET_INPUT_COLUMN, TRAINING_SET_OUTPUT_COLUMN]
     
-    PROBLEM_SET_FILE = StringIO(PROBLEM_SET_DATA) #'production_set.csv'
     PROBLEM_SET_ID_COLUMN = "id"
     PROBLEM_SET_INPUT_COLUMN = "comment"
     PROBLEM_SET_COLUMNS = [PROBLEM_SET_ID_COLUMN, PROBLEM_SET_INPUT_COLUMN]

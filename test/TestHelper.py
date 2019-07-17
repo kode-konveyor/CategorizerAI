@@ -21,12 +21,12 @@ def callArgument(functionMock, argPosition, callNumber=0):
 def callKwArgument(functionMock, callNumber=0):
     return functionMock.call_args_list[callNumber][1]
 
-def assertCallParameter(expected, functionMock, argPosition, callNumber=0):
+def assertCallParameter(expected, functionMock, argPosition, callNumber=0, prepareForCheck= lambda x: x):
     functionArgument = callArgument(functionMock, argPosition, callNumber)
-    asserter.assertEqual(expected, functionArgument)
+    asserter.assertEqual(prepareForCheck(expected), prepareForCheck(functionArgument))
 
 def assertIterablesEqual(expectedIterable, actualIterable):
-    return asserter.assertEquals(list(expectedIterable), 
+    return asserter.assertEqual(list(expectedIterable), 
         list(actualIterable))
 
 def assertFunctionParametersAcrossAllcalls(expectedIterable, functionMock, position):

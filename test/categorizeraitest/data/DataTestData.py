@@ -1,7 +1,7 @@
 #coding=utf-8
 import numpy
 import pandas
-from _io import StringIO
+
 from categorizeraitest.Config import Config
 
 class DataTestData:
@@ -16,11 +16,9 @@ class DataTestData:
     PROBLEM_OIDS=numpy.array([4,5])
     TRAIN_RESULTS=numpy.array([2,3,3,1,])
     config = Config()
-    TRAIN_SET_DATA = config.TRAIN_SET_DATA
-    PROBLEM_SET_DATA = config.PROBLEM_SET_DATA
-    TRAIN_SET=pandas.read_csv(StringIO(TRAIN_SET_DATA),'\t',names=config.TRAINING_SET_COLUMNS)
-    PROBLEM_SET=pandas.read_csv(StringIO(PROBLEM_SET_DATA),'\t',names=config.TRAINING_SET_COLUMNS)
-    
+    TRAIN_SET=pandas.read_csv(config.TRAINING_SET_FILE,'\t',encoding='utf-8',names=config.TRAINING_SET_COLUMNS)
+    PROBLEM_SET=pandas.read_csv(config.PROBLEM_SET_FILE,'\t',encoding='utf-8',names=config.PROBLEM_SET_COLUMNS)
+  
     TRAIN_SET_VALUES = numpy.array(['blabla', 'beea', 'beaa', 'baz'])
     PROBLEM_SET_VALUES = numpy.array(['boo', 'fefefe'])
     PROBLEM_MODEL_INPUT = [[ 98, 111, 111,   0,   0,   0],
@@ -31,5 +29,3 @@ class DataTestData:
                      [ 98,  97, 122,   0,   0,   0]]
     PROBLEM_MODEL_RESULT = [[ 0.3, 0.1, 0.6,   0],
                       [0, 0.3, 0.1, 0.6]]
-
-    
