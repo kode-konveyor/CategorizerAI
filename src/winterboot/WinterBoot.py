@@ -7,7 +7,6 @@ providers = {}
 
 consumers = {}
 
-
 def importAll(onlyfiles, package, pattern, nameConverter=lambda x: x):
     imported = []
     for file in onlyfiles:
@@ -38,7 +37,6 @@ def wireOneService(serviceId, lazy=False):
         else:
             return
     provider = providers[serviceId][0]
-    #provider = instantiateIfType(provider)
     providers[serviceId][0] = provider
     for consumer in consumers[serviceId]:
         consumer.provider = provider
@@ -56,5 +54,3 @@ def addProvider(serviceId, klass):
     if serviceId not in providers:
         providers[serviceId] = []
     providers[serviceId].append(klass)
-
-

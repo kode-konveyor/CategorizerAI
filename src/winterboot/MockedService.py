@@ -6,8 +6,6 @@ class MockedService(object):
         self.serviceName = serviceName
         if instance is None:
             self.mock = MagicMock()
-        else:
-            self.mock = instance
         self.orig = WinterBoot.providers[serviceName][0]
         WinterBoot.providers[serviceName][0]=self.mock
         WinterBoot.wireOneService(serviceName)
@@ -18,6 +16,4 @@ class MockedService(object):
     def __exit__(self, exceptionType, value, traceback):
         WinterBoot.providers[self.serviceName][0] = self.orig
         WinterBoot.wireOneService(self.serviceName)
-        if exceptionType is not None:
-            raise value
 
