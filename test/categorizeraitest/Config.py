@@ -6,7 +6,7 @@ from os.path import dirname
 @Service
 class Config(object):
     DATABASE_CONNECTOR = psycopg2
-    CONNECTION_STRING = "user@example.com/transactions"
+    CONNECTION_STRING = "postgresql://username:s3cr3t@example.com:5432/transactions"
     SQL_TO_OBTAIN_CATEGORIES = "SELECT id,category1,category2 from categories"
     SQL_TO_OBTAIN_TRANSACTION_BY_OID = "select * from all_transactions where oid={0}"
     SQL_TO_UPDATE_RECORD = "update {0.table} set category1='{0.choice[1]}', category2='{0.choice[2]}' where oid={0.oid}"

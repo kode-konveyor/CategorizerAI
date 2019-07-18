@@ -19,7 +19,7 @@ def importAll(onlyfiles, package, pattern, nameConverter=lambda x: x):
 def _autoload(package):
     mypath = package.__path__[0]
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
-    importAll(onlyfiles, package, ".*Service.py", lambda x:x[:-3])
+    importAll(onlyfiles, package, ".*Service.py$", lambda x:x[:-3])
     onlydirs = [f for f in listdir(mypath) if isdir(join(mypath, f))]
     for loadedPackage in importAll(onlydirs, package, ".*"):
         _autoload(loadedPackage)

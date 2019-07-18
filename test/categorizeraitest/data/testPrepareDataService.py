@@ -27,6 +27,9 @@ class Test(unittest.TestCase):
     def test_trainValues_are_calculated_using_NumericConverterService(self):
         self.assertEqual("firstValue",self.result.trainValues)
 
+    def test_max_length_is_calculated_as_the_max_string_length_in_both_sets(self):
+        self.assertEqual(self.testData.MAX_LENGTH,self.result.max_length)
+
     def test_problemValues_are_calculated_using_NumericConverterService(self):
         self.assertEqual("secondValue",self.result.problemValues)
 

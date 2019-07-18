@@ -5,7 +5,7 @@ class UpdateTestData(object):
     def __init__(self):
         self.testData = DataTestData()
         self.data=self.makePreparedData()
-        self.data.problemResults = self.testData.PROBLEM_MODEL_INPUT
+        self.data.problemResults = self.testData.PROBLEM_MODEL_RESULT
         self.categories = {
             1: (1, "a", "b"),
             2: (2, "c", "d"),
@@ -28,8 +28,7 @@ class UpdateTestData(object):
         data = MagicMock()
         data.problemOids = self.testData.PROBLEM_OIDS
         data.problemValues = self.testData.PROBLEM_MODEL_RESULT
-        data.output_neurons = self.testData.OUTPUT_NEURONS
-        data.max_length = self.testData.MAX_LENGTH
         data.numberOfOutputNeurons = self.testData.OUTPUT_NEURONS
+        data.max_length = self.testData.MAX_LENGTH
         return data
 

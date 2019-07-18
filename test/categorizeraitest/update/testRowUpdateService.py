@@ -86,7 +86,7 @@ class Test(unittest.TestCase):
         self.runTest(self.choice)
         TestHelper.assertCallParameter(
             self.updateTestData.oidAsStr,
-            self.updateRow, 2)
+            self.updateRow, 1)
 
     def test_the_database_row_is_updated_through_the_connections(self):
         self.runTest(self.choice)

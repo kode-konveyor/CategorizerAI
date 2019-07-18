@@ -19,12 +19,12 @@ class Test(unittest.TestCase):
                 MockedService('neuralNetBuilderService') as neuralNetBuilderService,\
                 MockedService('neuralNetTrainerService') as neuralNetTrainerService,\
                 MockedService('accuracyCheckService') as accuracyCheckService,\
-                MockedService('updateDBService') as updateDBService:
+                MockedService('updateService') as updateService:
             self.prepareDataService = prepareDataService
             self.neuralNetBuilderService = neuralNetBuilderService
             self.neuralNetTrainerService = neuralNetTrainerService
             self.accuracyCheckService = accuracyCheckService
-            self.updateDBService = updateDBService
+            self.updateService = updateService
 
             self.prepareDataService.prepareData.return_value = self.updateTestData.data
             self.neuralNetBuilderService.buildNeuralNet.return_value = self.aiTestData.model
@@ -76,9 +76,8 @@ class Test(unittest.TestCase):
 
     def test_updates_categories_based_on_predictions(self):
         TestHelper.assertCallParameter(self.updateTestData.data,
-                    self.updateDBService.handleUpdates, 0)
+                    self.updateService.handleUpdates, 0)
     
 
 if __name__ == "__main__":
     unittest.main()
-print("testCategorizerService end")

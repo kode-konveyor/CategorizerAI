@@ -1,16 +1,32 @@
+# coding=utf-8
 from unittest.mock import MagicMock
 
 class DbTestData:
     
-    oidAsString = "10"
+    oidAsString = "1115"
+    connectKwArgs = {
+        'database': 'transactions',
+        'user': 'username',
+        'password': 's3cr3t',
+        'host': 'example.com',
+        'port': 5432
+        }
     all_rows = [
-        ("first row 1", "first row 2", "first row 3", "first row 4", ),
-        ("second row 1", "second row 2", "second row 3", "second row 4", ),
-        ("third row 1", "third row 2", "third row 3", "third row 4", )
+        (1112, "abc", 11.12, "a", "b" ),
+        (1113, "cő", -11.13, "d", "e" ),
+        (1114, "efgh", -11.14, "d", "e" ),
+        (1118, "baz", -11.18, "e", "f" ),
+        (1115, "boo", 11.15, None , None ),
+        (1116, "fefefe", -11.16, None, None )
         ]
-    fetched_row = all_rows[1]
+    trainRows = all_rows[:4]
+    trainComments = map(lambda x: x[1], trainRows)
+    problemRows = all_rows[4:]
+    problemOids = map(lambda x: x[0], problemRows)
+    problemComments = map(lambda x: x[1], problemRows)
+    fetched_row = all_rows[3]
     choice = ("foo", "bar", "baz")
-    formattedUpdateQuery = "update transactions set category1='bar', category2='baz' where oid=10"
+    formattedUpdateQuery = "update transactions set category1='bar', category2='baz' where oid=1115"
     connection = None
     connector = None
     

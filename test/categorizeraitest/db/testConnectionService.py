@@ -4,15 +4,14 @@ from winterboot.Autowired import Autowired
 from categorizeraitest.db.DbTestData import DbTestData
 import TestHelper
 
-
 connectionService = Autowired('connectionService')
 config = Autowired('config')
 class Test(unittest.TestCase):
 
     def setUp(self):
-        dbTestData = DbTestData()
-        self.fakeConnection = dbTestData.connection
-        with unittest.mock.patch('psycopg2.connect', new = dbTestData.connector) as connector:
+        self.dbTestData = DbTestData()
+        self.fakeConnection = self.dbTestData.connection
+        with unittest.mock.patch('psycopg2.connect', new = self.dbTestData.connector) as connector:
             self.connector = connector
             self.connection = connectionService.obtainConnection()
 
@@ -20,7 +19,7 @@ class Test(unittest.TestCase):
         self.assertEqual(self.fakeConnection, self.connection)
 
     def test_obtainConnection_calls_connect_with_configured_connect_string(self):
-        TestHelper.assertCallParameter(config.CONNECTION_STRING, self.connector, 0)
+        self.assertEqual(self.dbTestData.connectKwArgs, TestHelper.callKwArgument(self.connector))
 
 if __name__ == "__main__":
     unittest.main()

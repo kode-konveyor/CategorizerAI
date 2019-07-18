@@ -13,8 +13,8 @@ class OptionPreparatorService:
     
     def getAnswersForRow(self,rowNumber, data):
         results = []
-        row = data.problemValues[rowNumber]
-        for j in range(data.output_neurons):
+        row = data.problemResults[rowNumber]
+        for j in range(data.numberOfOutputNeurons):
             results.append((row[j], j))
         results = sorted(results, key=lambda rec:rec[0], reverse=True)
         return results

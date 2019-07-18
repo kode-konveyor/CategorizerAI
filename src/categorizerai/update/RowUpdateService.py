@@ -17,4 +17,4 @@ class RowUpdateService:
         options = optionPreparatorService.prepareOptionsToOffer(rowNumber, data, categories)
         choice = choiceObtainerService.obtainChoice(options)
         if choice is not None:
-            updateDBService.updateRow(connection, row, oidAsStr, choice)
+            updateDBService.updateRow(connection, oidAsStr, row, choice)

@@ -9,7 +9,7 @@ prepareDataService = Autowired('prepareDataService')
 neuralNetBuilderService = Autowired('neuralNetBuilderService')
 neuralNetTrainerService = Autowired('neuralNetTrainerService')
 accuracyCheckService = Autowired('accuracyCheckService')
-updateDBService = Autowired('updateDBService')
+updateService = Autowired('updateService')
 
 @Service
 class CategorizerService:
@@ -23,5 +23,5 @@ class CategorizerService:
         accuracyCheckService.checkAccuracy(accuracy)
         data.problemResults=model.predict(data.problemValues)
         
-        updateDBService.handleUpdates(data)
+        updateService.handleUpdates(data)
 
