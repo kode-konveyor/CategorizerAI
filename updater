@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#the first line nulls out the data from some rows, so now we have a problem.
+#you DO NOT want this line in production code
+psql "postgresql://guest:s3cr3t@jobe.kodekonveyor.com/transactions" -c "update transactions set category=null where oid in (select oid from transactions  where agency = 'DC Public Library' order by random() limit 10);"
+
+#downloading the dataset
+psql "postgresql://guest:s3cr3t@jobe.kodekonveyor.com/transactions" -c "\\copy (select oid,concat(vendor_name,',',vendor_state_province), category_id from transactions where agency = 'DC Public Library' and category is not null) to '/tmp/train_set.csv'"
+psql "postgresql://guest:s3cr3t@jobe.kodekonveyor.com/transactions" -c "\\copy (select oid,concat(vendor_name,',',vendor_state_province) from transactions where agency = 'DC Public Library' and category is null) to '/tmp/production_set.csv'"
+
+#updating the rows
+./CategorizerAI
