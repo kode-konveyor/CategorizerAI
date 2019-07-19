@@ -1,1 +1,4 @@
 *.pyc
+dist
+src/CategorizerAI.egg-info/
+build

@@ -16,9 +16,3 @@ for the tuning. Bigger is not always better!
 
 It might happen that the neural net cannot learn the data with enough accuracy.
 In this case it tells you so, and exits.
-
-#DEPENDENCIES
-
-    apt install python3-pip libpq-dev
-    pip3 install pandas tensorflow keras psycopg2 
-
