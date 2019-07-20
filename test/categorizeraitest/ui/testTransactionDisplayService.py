@@ -1,16 +1,16 @@
 import unittest
 from winterboot.Autowired import Autowired
-from categorizeraitest.db.DbTestData import DbTestData
 import TestHelper
 
 transactionDisplayService = Autowired("transactionDisplayService")
 class Test(unittest.TestCase):
 
     def testdisplayTransaction_prints_the_transaction(self):
-        dbTestData = DbTestData()
-        with unittest.mock.patch('sys.stdout') as mockedStdout:
-            transactionDisplayService.displayTransaction(dbTestData.fetched_row)
-        TestHelper.assertPrintedOn(mockedStdout, dbTestData.fetched_row)
+        with\
+                Autowired('dbTestData', self),\
+                unittest.mock.patch('sys.stdout') as mockedStdout:
+            transactionDisplayService().displayTransaction(self.dbTestData.fetched_row)
+        TestHelper.assertPrintedOn(mockedStdout, self.dbTestData.fetched_row)
 
 
 if __name__ == "__main__":

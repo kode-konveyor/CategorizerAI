@@ -2,7 +2,6 @@
 import unittest
 from winterboot.Autowired import Autowired
 from winterboot.MockedService import MockedService
-from categorizeraitest.ai.AiTestData import AITestData
 import TestHelper
 
 accuracyCheckService = Autowired('accuracyCheckService')
@@ -11,13 +10,15 @@ config = Autowired('config')
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.aiTestData = AITestData()
+        with Autowired('aiTestData', self, singleton=False):
+            pass
 
     def runTestWithAccuracy(self, accuracy):
-        with MockedService('displayAccuracyService') as self.displayAccuracyService:
-            with MockedService('accuracyErrorDisplayService') as self.accuracyErrorDisplayService:
-                with unittest.mock.patch('sys.exit') as self.sysExit:
-                    accuracyCheckService.checkAccuracy(accuracy)
+        with\
+            MockedService('displayAccuracyService') as self.displayAccuracyService,\
+            MockedService('accuracyErrorDisplayService') as self.accuracyErrorDisplayService,\
+            unittest.mock.patch('sys.exit') as self.sysExit:
+                    accuracyCheckService().checkAccuracy(accuracy)
 
     def test_checkAccuracy_displays_accuracy(self):
         self.runTestWithAccuracy(self.aiTestData.ACCURACY)

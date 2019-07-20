@@ -2,46 +2,41 @@ import unittest
 from winterboot.Autowired import Autowired
 from winterboot.MockedService import MockedService
 import TestHelper
-from categorizeraitest.data.DataTestData import DataTestData
-from categorizeraitest.update.UpdateTestData import UpdateTestData
-from categorizeraitest.ai.AiTestData import AITestData
+from categorizeraitest.data import PrepareDataStubs
+from categorizeraitest.ai import NeuralNetBuilderStubs, NeuralNetTrainerStubs
+
+categorizerService = Autowired("categorizerService")()
 
 
-categorizerService = Autowired("categorizerService")
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.testData = DataTestData()
-        self.updateTestData = UpdateTestData()
-        self.aiTestData = AITestData()
         with \
-                MockedService('prepareDataService') as prepareDataService,\
-                MockedService('neuralNetBuilderService') as neuralNetBuilderService,\
-                MockedService('neuralNetTrainerService') as neuralNetTrainerService,\
-                MockedService('accuracyCheckService') as accuracyCheckService,\
-                MockedService('updateService') as updateService:
-            self.prepareDataService = prepareDataService
-            self.neuralNetBuilderService = neuralNetBuilderService
-            self.neuralNetTrainerService = neuralNetTrainerService
-            self.accuracyCheckService = accuracyCheckService
-            self.updateService = updateService
+                Autowired('aiTestData', self),\
+                Autowired('updateTestData', self),\
+                Autowired('dataTestData', self),\
+                MockedService('prepareDataService', self),\
+                MockedService('neuralNetBuilderService', self),\
+                MockedService('neuralNetTrainerService', self),\
+                MockedService('accuracyCheckService', self),\
+                MockedService('updateService', self):
 
-            self.prepareDataService.prepareData.return_value = self.updateTestData.data
-            self.neuralNetBuilderService.buildNeuralNet.return_value = self.aiTestData.model
-            self.neuralNetTrainerService.trainNeuralNet.return_value = self.aiTestData.ACCURACY
+            PrepareDataStubs.behaviour(self.updateTestData)
+            NeuralNetBuilderStubs.behaviour(self.aiTestData)
+            NeuralNetTrainerStubs.behaviour(self.aiTestData)
 
             categorizerService.categorize()
 
     def test_categorize_prepares_data_with_the_loaded_train_set(self):
         TestHelper.assertCallParameter(
-            self.testData.TRAIN_SET,
+            self.dataTestData.TRAIN_SET,
             self.prepareDataService.prepareData,
             0,
             prepareForCheck=lambda x: x.to_dict())
 
     def test_categorize_prepares_data_with_the_loaded_problem_set(self):
         TestHelper.assertCallParameter(
-            self.testData.PROBLEM_SET,
+            self.dataTestData.PROBLEM_SET,
             self.prepareDataService.prepareData, 1,
             prepareForCheck=lambda x: x.to_dict())
 

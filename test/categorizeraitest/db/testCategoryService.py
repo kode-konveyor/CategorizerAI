@@ -1,7 +1,6 @@
 #coding=utf-8
 import unittest
 from winterboot.Autowired import Autowired
-from categorizeraitest.db.DbTestData import DbTestData
 import TestHelper
 
 categoryService = Autowired('categoryService')
@@ -10,13 +9,13 @@ config = Autowired('config')
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.dbTestData = DbTestData()
-        self.fakeConnection = self.dbTestData.connection
-        self.categories = categoryService.fetchCategories(self.fakeConnection)
+        with Autowired('dbTestData', self, singleton=False):
+            self.fakeConnection = self.dbTestData.connection
+            self.categories = categoryService().fetchCategories(self.fakeConnection)
 
     def test_returns_a_dict_keyed_with_the_element_ID_COLUMN_POSITION_IN_CATEGORIES_TABLE(self):
         firstRow = self.dbTestData.all_rows[0]
-        firstRowKey = firstRow[config.ID_COLUMN_POSITION_IN_CATEGORIES_TABLE]
+        firstRowKey = firstRow[config().ID_COLUMN_POSITION_IN_CATEGORIES_TABLE]
         self.assertEqual(
             firstRow,
             self.categories[firstRowKey]
@@ -33,4 +32,4 @@ class Test(unittest.TestCase):
 
     def test_executes_SQL_TO_OBTAIN_CATEGORIES(self):
         self.fakeConnection.cursor.execute.assert_called_once()
-        TestHelper.assertCallParameter(config.SQL_TO_OBTAIN_CATEGORIES, self.fakeConnection.cursor.execute, 0)
+        TestHelper.assertCallParameter(config().SQL_TO_OBTAIN_CATEGORIES, self.fakeConnection.cursor.execute, 0)

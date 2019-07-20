@@ -4,7 +4,7 @@ import pandas
 from winterboot.Autowired import Autowired
 from winterboot.Service import Service
 
-config = Autowired('config')
+config = Autowired('config')()
 prepareDataService = Autowired('prepareDataService')
 neuralNetBuilderService = Autowired('neuralNetBuilderService')
 neuralNetTrainerService = Autowired('neuralNetTrainerService')
@@ -17,11 +17,11 @@ class CategorizerService:
         trainSet = pandas.read_csv(config.TRAINING_SET_FILE,'\t',encoding='utf-8',names=config.TRAINING_SET_COLUMNS)
         problemSet = pandas.read_csv(config.PROBLEM_SET_FILE,'\t',encoding='utf-8',names=config.PROBLEM_SET_COLUMNS)
         
-        data = prepareDataService.prepareData(trainSet, problemSet)
-        model = neuralNetBuilderService.buildNeuralNet(data.max_length, data.numberOfOutputNeurons)
-        accuracy = neuralNetTrainerService.trainNeuralNet(data.trainValues, data.trainResults, model)
-        accuracyCheckService.checkAccuracy(accuracy)
+        data = prepareDataService().prepareData(trainSet, problemSet)
+        model = neuralNetBuilderService().buildNeuralNet(data.max_length, data.numberOfOutputNeurons)
+        accuracy = neuralNetTrainerService().trainNeuralNet(data.trainValues, data.trainResults, model)
+        accuracyCheckService().checkAccuracy(accuracy)
         data.problemResults=model.predict(data.problemValues)
         
-        updateService.handleUpdates(data)
+        updateService().handleUpdates(data)
 

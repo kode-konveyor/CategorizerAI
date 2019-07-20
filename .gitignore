@@ -2,3 +2,4 @@
 dist
 src/CategorizerAI.egg-info/
 build
+*.bak

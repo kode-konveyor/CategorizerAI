@@ -9,7 +9,7 @@ class Test(unittest.TestCase):
 
     def testdisplayTransaction_prints_the_transaction(self):
         with unittest.mock.patch('sys.stdout') as mockedStdout:
-            accuracyErrorDisplayService.displayAccurracyError()
+            accuracyErrorDisplayService().displayAccurracyError()
         TestHelper.assertPrintedOn(mockedStdout, AccuracyErrorDisplayService.ACCURACY_ERROR_MESSAGE)
 
 

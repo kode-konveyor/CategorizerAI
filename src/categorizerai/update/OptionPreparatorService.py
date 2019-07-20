@@ -25,9 +25,9 @@ class OptionPreparatorService:
         for answer in answers:
             probability = answer[0]
             categoryId = answer[1]
-            if categoryId in categories and probability > config.MIN_PROBABILITY:
+            if categoryId in categories and probability > config().MIN_PROBABILITY:
                 categoriesForAnswer = categories[categoryId]
-                optionDisplayService.displayOption(choiceNumber, probability, categoriesForAnswer)
+                optionDisplayService().displayOption(choiceNumber, probability, categoriesForAnswer)
                 options[choiceNumber] = probability, categoriesForAnswer
                 choiceNumber += 1
         return options

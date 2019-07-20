@@ -8,7 +8,7 @@ config = Autowired('config')
 class UpdateDBService:
     
     def updateRow(self, connection, oid, row, choice):
-        table = config.figureOutTable(row)
+        table = config().figureOutTable(row)
         sentence = self.createUpdateSentence(oid, choice, table)
         cursor = connection.cursor()
         cursor.execute(sentence)
@@ -20,6 +20,6 @@ class UpdateDBService:
         args.table = table
         args.choice = choice
         args.oid = oid
-        sentence = config.SQL_TO_UPDATE_RECORD.format(args)
+        sentence = config().SQL_TO_UPDATE_RECORD.format(args)
         return sentence
 

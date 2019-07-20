@@ -20,7 +20,8 @@ setuptools.setup(
           'tensorflow',
           'keras',
           'pandas',
-          'psycopg2-binary'
+          'psycopg2-binary',
+          'winterboot>=0.3'
       ],
      classifiers=[
          "Programming Language :: Python :: 3",

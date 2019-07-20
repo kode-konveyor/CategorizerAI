@@ -1,10 +1,12 @@
 from categorizeraitest.data.DataTestData import DataTestData
 from unittest.mock import MagicMock
+from winterboot.Service import Service
 
+@Service
 class UpdateTestData(object):
     def __init__(self):
         self.testData = DataTestData()
-        self.data=self.makePreparedData()
+        self.data=self._makePreparedData()
         self.data.problemResults = self.testData.PROBLEM_MODEL_RESULT
         self.categories = {
             1: (1, "a", "b"),
@@ -24,7 +26,7 @@ class UpdateTestData(object):
         self.regexConformantChoiceInput = "one,two"
         self.choiceFromRegexConformantInput = self.regexConformantChoiceInput.split(",")
 
-    def makePreparedData(self):
+    def _makePreparedData(self):
         data = MagicMock()
         data.problemOids = self.testData.PROBLEM_OIDS
         data.problemValues = self.testData.PROBLEM_MODEL_RESULT

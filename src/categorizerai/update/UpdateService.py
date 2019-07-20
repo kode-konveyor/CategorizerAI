@@ -9,9 +9,9 @@ rowUpdateService = Autowired('rowUpdateService')
 class UpdateService:
 
     def handleUpdates(self, data):
-        connection = connectionService.obtainConnection()
-        categories = categoryService.fetchCategories(connection)
+        connection = connectionService().obtainConnection()
+        categories = categoryService().fetchCategories(connection)
     
         for rowNumber in range(len(data.problemResults)):
-            rowUpdateService.handleOneRow(rowNumber, data, connection, categories)
+            rowUpdateService().handleOneRow(rowNumber, data, connection, categories)
         connection.close()

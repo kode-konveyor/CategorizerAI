@@ -1,7 +1,6 @@
 #coding=utf-8
 import unittest
 from winterboot.Autowired import Autowired
-from categorizeraitest.ai.AiTestData import AITestData
 import TestHelper
 
 neuralNetTrainerService = Autowired('neuralNetTrainerService')
@@ -10,15 +9,15 @@ config = Autowired('config')
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.aiTestData = AITestData()
-        self.model = self.aiTestData.model
-
-        self.result = neuralNetTrainerService.trainNeuralNet(
-            self.aiTestData.TRAIN_VALUES,
-            self.aiTestData.TRAIN_RESULTS,
-            self.model)
-        self.compileCallKwargs = TestHelper.callKwArgument(self.model.compile)
-        self.fitCallKwargs = TestHelper.callKwArgument(self.model.fit)
+        with Autowired('aiTestData', self, singleton=False):
+            self.model = self.aiTestData.model
+    
+            self.result = neuralNetTrainerService().trainNeuralNet(
+                self.aiTestData.TRAIN_VALUES,
+                self.aiTestData.TRAIN_RESULTS,
+                self.model)
+            self.compileCallKwargs = TestHelper.callKwArgument(self.model.compile)
+            self.fitCallKwargs = TestHelper.callKwArgument(self.model.fit)
 
     def test_trainNeuralNet_compiles_the_model(self):
         self.model.compile.assert_called_once()
@@ -45,7 +44,7 @@ class Test(unittest.TestCase):
         self.assertEqual(self.aiTestData.TRAIN_RESULTS, TestHelper.callArgument(self.model.fit,1))
 
     def test_batch_size_is_BATCH_SIZE(self):
-        self.assertEqual(config.BATCH_SIZE, self.fitCallKwargs['batch_size'])
+        self.assertEqual(config().BATCH_SIZE, self.fitCallKwargs['batch_size'])
 
     def test_number_of_epochs_is_EPOCHS(self):
-        self.assertEqual(config.EPOCHS, self.fitCallKwargs['epochs'])
+        self.assertEqual(config().EPOCHS, self.fitCallKwargs['epochs'])

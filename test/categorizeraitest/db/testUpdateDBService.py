@@ -1,22 +1,20 @@
 #coding=utf-8
 import unittest
 from winterboot.Autowired import Autowired
-from categorizeraitest.db.DbTestData import DbTestData
 import TestHelper
 
 updateDBService = Autowired('updateDBService')
-config = Autowired('config')
 
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.dbTestData = DbTestData()
-        self.fakeConnection = self.dbTestData.connection
-        updateDBService.updateRow(
-            self.fakeConnection,
-            self.dbTestData.oidAsString,
-            self.dbTestData.fetched_row,
-            self.dbTestData.choice)
+        with Autowired('dbTestData', self, singleton=False):
+            self.fakeConnection = self.dbTestData.connection
+            updateDBService().updateRow(
+                self.fakeConnection,
+                self.dbTestData.oidAsString,
+                self.dbTestData.fetched_row,
+                self.dbTestData.choice)
         
     def test_closes_the_connection(self):
         self.fakeConnection.cursor.assert_called_once()

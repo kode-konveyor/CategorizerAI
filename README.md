@@ -1,14 +1,16 @@
-#Install
+# Install
 
 pip3 install CategorizerAI
 
-#Usage, Example
+# Usage, Example
 
 There is an example database using a dataset with US government transactions.
 The Config.py in the source root is a configuration to use it.
 The updater script in the same location drives data acquisition and updating.
 
-You can set up your own setup by studying the example
+You can set up your own setup by studying the example. Copy over the Config.py
+to somewhere in PYTHONPATH, the updater script to somewhere in your path,
+and change them to your needs. 
 
 The hardest part is tuning the AI for the particular data you have.
 use FIRST_LAYER_NEURONS, SECOND_LAYER_NEURONS, BATCH_SIZE and EPOCHS in Config.py

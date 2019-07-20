@@ -9,7 +9,7 @@ choiceAskService = Autowired('choiceAskService')
 class ChoiceObtainerService:
 
     def obtainChoice(self,options):
-        answer = choiceAskService.askUserForChoice()
+        answer = choiceAskService().askUserForChoice()
         choice = self.computeChoiceFromAnswer(options, answer)
         return choice
 
@@ -17,7 +17,7 @@ class ChoiceObtainerService:
         asNum = self.num(answer)
         if asNum in options:
             choice = options[asNum][1]
-        elif re.match(config.CHOICE_FORMAT_REGEX, answer):
+        elif re.match(config().CHOICE_FORMAT_REGEX, answer):
             choice = answer.split(",")
         else:
             choice = None

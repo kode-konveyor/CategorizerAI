@@ -2,16 +2,15 @@
 import unittest
 import re
 from winterboot.Autowired import Autowired
-from categorizeraitest.db.DbTestData import DbTestData
 import TestHelper
 
 rowProviderService = Autowired('rowProviderService')
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.dbTestData = DbTestData()
-        self.fakeConnection = self.dbTestData.connection
-        self.row = rowProviderService.getRowByOid(self.fakeConnection, self.dbTestData.oidAsString)
+        with Autowired('dbTestData', self, singleton=False):
+            self.fakeConnection = self.dbTestData.connection
+            self.row = rowProviderService().getRowByOid(self.fakeConnection, self.dbTestData.oidAsString)
         
     def test_returns_fetched_row(self):
         self.assertEqual(self.dbTestData.fetched_row, self.row)

@@ -6,5 +6,5 @@ config = Autowired('config')
 class OptionDisplayService(object):
 
     def displayOption(self, choiceNumber, probability, categoriesForAnswer):
-        print(config.OPTION_DISPLAY_FORMAT.format(choiceNumber, probability, categoriesForAnswer))
+        print(config().OPTION_DISPLAY_FORMAT.format(choiceNumber, probability, categoriesForAnswer))
 

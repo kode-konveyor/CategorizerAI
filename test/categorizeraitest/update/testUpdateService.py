@@ -1,8 +1,6 @@
 import unittest
 from winterboot.Autowired import Autowired
 from winterboot.MockedService import MockedService
-from categorizeraitest.update.UpdateTestData import UpdateTestData
-from categorizeraitest.db.DbTestData import DbTestData
 import TestHelper
 
 updateService = Autowired("updateService")
@@ -10,21 +8,18 @@ updateService = Autowired("updateService")
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.updateTestData = UpdateTestData()
-        self.dbTestData = DbTestData()
 
         with \
-          MockedService('rowUpdateService') as rowUpdateService,\
-          MockedService('connectionService') as connectionService,\
-          MockedService('categoryService') as categoryService:
-            self.rowUpdateService = rowUpdateService
-            self.connectionService = connectionService
-            self.categoryService = categoryService
+          Autowired('updateTestData', self),\
+          Autowired('dbTestData', self),\
+          MockedService('rowUpdateService', self),\
+          MockedService('connectionService', self),\
+          MockedService('categoryService', self):
 
             self.connectionService.obtainConnection.return_value = self.dbTestData.connection
             self.categoryService.fetchCategories.return_value = self.updateTestData.categories
 
-            updateService.handleUpdates(
+            updateService().handleUpdates(
                 self.updateTestData.data)
 
             self.handleOneRowArgs = self.rowUpdateService.handleOneRow

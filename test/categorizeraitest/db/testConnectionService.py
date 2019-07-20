@@ -1,19 +1,18 @@
 #coding=utf-8
 import unittest
 from winterboot.Autowired import Autowired
-from categorizeraitest.db.DbTestData import DbTestData
 import TestHelper
 
 connectionService = Autowired('connectionService')
-config = Autowired('config')
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.dbTestData = DbTestData()
-        self.fakeConnection = self.dbTestData.connection
-        with unittest.mock.patch('psycopg2.connect', new = self.dbTestData.connector) as connector:
+        with \
+                Autowired('dbTestData', self),\
+                unittest.mock.patch('psycopg2.connect', new = self.dbTestData.connector) as connector:
+            self.fakeConnection = self.dbTestData.connection
             self.connector = connector
-            self.connection = connectionService.obtainConnection()
+            self.connection = connectionService().obtainConnection()
 
     def test_obtainConnection_calls_connect_of_DATABASE_CONNECTOR(self):
         self.assertEqual(self.fakeConnection, self.connection)

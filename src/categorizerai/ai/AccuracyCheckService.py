@@ -12,8 +12,8 @@ class AccuracyCheckService:
     
     def checkAccuracy(self, accuracy):
 
-        displayAccuracyService.displayAccuracy(accuracy)
-        if accuracy < config.MIN_ACCURACY:
-            accuracyErrorDisplayService.displayAccurracyError()
+        displayAccuracyService().displayAccuracy(accuracy)
+        if accuracy < config().MIN_ACCURACY:
+            accuracyErrorDisplayService().displayAccurracyError()
             sys.exit(-1)
 
