@@ -9,4 +9,4 @@ autoload(categorizerai)
 
 categorizerService = Autowired('categorizerService')
 
-categorizerService.categorize()
+categorizerService().categorize()
