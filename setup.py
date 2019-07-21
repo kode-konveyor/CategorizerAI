@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
      name='CategorizerAI',
-     version='0.4.1',
+     version='0.4.2',
      author="Arpad Magosanyi",
      author_email="mag@kodekonveyor.com",
      description="An AI to categorize finantial transactions",
