@@ -1,5 +1,9 @@
-from winterboot.Autowired import Autowired
+from winterboot.TestDataForStub import TestDataForStub
+from winterboot.Stubs import Stubs
 
-def behaviour(aiTestData):
-        neuralNetBuilderService = Autowired('neuralNetBuilderService')()
-        neuralNetBuilderService.buildNeuralNet.return_value = aiTestData.model
+@Stubs
+class NeuralNetBuilderStubs:
+    def behaviour(self, service):
+        with\
+                TestDataForStub('aiTestData') as aiTestData:
+            service.buildNeuralNet.return_value = aiTestData.model

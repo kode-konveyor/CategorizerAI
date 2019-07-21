@@ -1,5 +1,9 @@
-from winterboot.Autowired import Autowired
+from winterboot.Stubs import Stubs
+from winterboot.TestDataForStub import TestDataForStub
 
-def behaviour(updateTestData):
-        prepareDataService = Autowired('prepareDataService')()
-        prepareDataService.prepareData.return_value = updateTestData.data
+@Stubs
+class PrepareDataStubs:
+    def behaviour(self, service):
+        with\
+                TestDataForStub('updateTestData', self):
+            service.prepareData.return_value = self.updateTestData.data

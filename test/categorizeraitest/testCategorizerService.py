@@ -1,31 +1,23 @@
 import unittest
-from winterboot.Autowired import Autowired
 from winterboot.MockedService import MockedService
 import TestHelper
-from categorizeraitest.data import PrepareDataStubs
-from categorizeraitest.ai import NeuralNetBuilderStubs, NeuralNetTrainerStubs
+from winterboot.Autowired import Autowired
 
-categorizerService = Autowired("categorizerService")()
-
+categorizerService = Autowired("categorizerService")
 
 class Test(unittest.TestCase):
 
     def setUp(self):
         with \
+                Autowired('dataTestData', self),\
                 Autowired('aiTestData', self),\
                 Autowired('updateTestData', self),\
-                Autowired('dataTestData', self),\
                 MockedService('prepareDataService', self),\
                 MockedService('neuralNetBuilderService', self),\
                 MockedService('neuralNetTrainerService', self),\
                 MockedService('accuracyCheckService', self),\
                 MockedService('updateService', self):
-
-            PrepareDataStubs.behaviour(self.updateTestData)
-            NeuralNetBuilderStubs.behaviour(self.aiTestData)
-            NeuralNetTrainerStubs.behaviour(self.aiTestData)
-
-            categorizerService.categorize()
+            categorizerService().categorize()
 
     def test_categorize_prepares_data_with_the_loaded_train_set(self):
         TestHelper.assertCallParameter(

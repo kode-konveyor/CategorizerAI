@@ -1,5 +1,5 @@
 from winterboot.Autowired import Autowired
 
 def choiceObtainerStubs(choice):
-    choiceAskService = Autowired('choiceAskService')
-    choiceAskService().askUserForChoice.return_value = choice
+    with Autowired('choiceAskService') as choiceAskService:
+        choiceAskService.askUserForChoice.return_value = choice

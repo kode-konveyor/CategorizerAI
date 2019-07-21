@@ -2,10 +2,10 @@
 import numpy
 import pandas
 
-from winterboot.Service import Service
 from winterboot.Autowired import Autowired
+from winterboot.TestData import TestData
 
-@Service
+@TestData
 class DataTestData:
     def __init__(self):
         with\

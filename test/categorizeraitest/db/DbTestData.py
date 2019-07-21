@@ -1,8 +1,8 @@
 # coding=utf-8
 from unittest.mock import MagicMock
-from winterboot.Service import Service
+from winterboot.TestData import TestData
 
-@Service
+@TestData
 class DbTestData: 
     def __init__(self):
         self.oidAsString = "1115"

@@ -1,7 +1,7 @@
 from unittest.mock import MagicMock
-from winterboot.Service import Service
+from winterboot.TestData import TestData
 
-@Service
+@TestData
 class AiTestData:
     ACCURACY = 0.78
     LOW_ACCURACY = 0.55
