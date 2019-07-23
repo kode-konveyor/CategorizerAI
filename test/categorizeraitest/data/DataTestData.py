@@ -9,14 +9,14 @@ from winterboot.TestData import TestData
 class DataTestData:
     def __init__(self):
         with\
-            Autowired('dbTestData', singleton=False) as dbTestData,\
-            Autowired('config', singleton=False) as config:
-                self.TRAIN_SET_VALUES = numpy.array(list(dbTestData.trainComments))
-                self.PROBLEM_OIDS=numpy.array(list(dbTestData.problemOids))
-                self.TRAIN_SET=pandas.read_csv(config.TRAINING_SET_FILE,'\t',encoding='utf-8',names=config.TRAINING_SET_COLUMNS)
-                self.PROBLEM_SET=pandas.read_csv(config.PROBLEM_SET_FILE,'\t',encoding='utf-8',names=config.PROBLEM_SET_COLUMNS)
+            Autowired('DbTestData', singleton=False) as DbTestData,\
+            Autowired('Config', singleton=False) as Config:
+                self.TRAIN_SET_VALUES = numpy.array(list(DbTestData.trainComments))
+                self.PROBLEM_OIDS=numpy.array(list(DbTestData.problemOids))
+                self.TRAIN_SET=pandas.read_csv(Config.TRAINING_SET_FILE,'\t',encoding='utf-8',names=Config.TRAINING_SET_COLUMNS)
+                self.PROBLEM_SET=pandas.read_csv(Config.PROBLEM_SET_FILE,'\t',encoding='utf-8',names=Config.PROBLEM_SET_COLUMNS)
               
-                self.PROBLEM_SET_VALUES = numpy.array(list(dbTestData.problemComments))
+                self.PROBLEM_SET_VALUES = numpy.array(list(DbTestData.problemComments))
                 self.MAX_LENGTH = 6
                 self.OUTPUT_NEURONS = 4
                 self.TRAIN_RESULTS=numpy.array([2,3,3,1,])

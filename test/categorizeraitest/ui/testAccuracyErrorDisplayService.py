@@ -1,17 +1,18 @@
 import unittest
 from winterboot.Autowired import Autowired
 import TestHelper
+from winterboot.MockedService import MockedService
 
-accuracyErrorDisplayService = Autowired("accuracyErrorDisplayService")
+accuracyErrorDisplayService = Autowired("AccuracyErrorDisplayService")
 
 class Test(unittest.TestCase):
 
-    def testdisplayTransaction_prints_the_transaction(self):
+    def it_displays_the_transaction(self):
         with\
-                Autowired('uiTestData', self),\
-                unittest.mock.patch('sys.stdout') as mockedStdout:
-            accuracyErrorDisplayService().displayAccurracyError()
-        TestHelper.assertPrintedOn(mockedStdout, self.uiTestData.ACCURACY_ERROR_MESSAGE)
+                Autowired('UiTestData', self),\
+                MockedService('sys.stdout') as mockedStdout:
+            accuracyErrorDisplayService.displayAccurracyError()
+        TestHelper.assertPrintedOn(mockedStdout, self.UiTestData.ACCURACY_ERROR_MESSAGE)
 
 
 if __name__ == "__main__":

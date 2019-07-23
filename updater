@@ -9,4 +9,5 @@ psql "postgresql://guest:s3cr3t@jobe.kodekonveyor.com/transactions" -c "\\copy (
 psql "postgresql://guest:s3cr3t@jobe.kodekonveyor.com/transactions" -c "\\copy (select oid,concat(vendor_name,',',vendor_state_province) from transactions where agency = 'DC Public Library' and category is null) to '/tmp/production_set.csv'"
 
 #updating the rows
-./CategorizerAI
+export PATH=$PATH:.
+PYTHONPATH=src:. CategorizerAI

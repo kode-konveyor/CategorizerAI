@@ -7,6 +7,6 @@ from winterboot.Autowired import Autowired
 import categorizerai
 autoload(categorizerai)
 
-categorizerService = Autowired('categorizerService')
+categorizerService = Autowired('CategorizerService')
 
-categorizerService().categorize()
+categorizerService.call()

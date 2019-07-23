@@ -3,17 +3,17 @@ import sys
 from winterboot.Autowired import Autowired
 from winterboot.Service import Service
 
-config = Autowired('config')
-displayAccuracyService = Autowired('displayAccuracyService')
-accuracyErrorDisplayService = Autowired('accuracyErrorDisplayService')
+config = Autowired('Config')()
+displayAccuracyService = Autowired('DisplayAccuracyService')
+accuracyErrorDisplayService = Autowired('AccuracyErrorDisplayService')
 
 @Service
 class AccuracyCheckService:
     
-    def checkAccuracy(self, accuracy):
+    def call(self, accuracy):
 
-        displayAccuracyService().displayAccuracy(accuracy)
-        if accuracy < config().MIN_ACCURACY:
-            accuracyErrorDisplayService().displayAccurracyError()
+        displayAccuracyService.call(accuracy)
+        if accuracy < config.MIN_ACCURACY:
+            accuracyErrorDisplayService.call()
             sys.exit(-1)
 

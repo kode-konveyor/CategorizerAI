@@ -5,7 +5,7 @@ pip3 install CategorizerAI
 # Usage, Example
 
 There is an example database using a dataset with US government transactions.
-The Config.py in the source root is a configuration to use it.
+The Config.py in the source root is a Configuration to use it.
 The updater script in the same location drives data acquisition and updating.
 
 You can set up your own setup by studying the example. Copy over the Config.py

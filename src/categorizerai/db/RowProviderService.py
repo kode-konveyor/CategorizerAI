@@ -1,14 +1,14 @@
 from winterboot.Autowired import Autowired
 from winterboot.Service import Service
 
-config = Autowired('config')
+Config = Autowired('Config')
 
 @Service
 class RowProviderService:
 
-    def getRowByOid(self, connection, oidAsStr):
+    def call(self, connection, oidAsStr):
         cursor = connection.cursor()
-        sqlCommand = config().SQL_TO_OBTAIN_TRANSACTION_BY_OID.format(oidAsStr)
+        sqlCommand = Config().SQL_TO_OBTAIN_TRANSACTION_BY_OID.format(oidAsStr)
         cursor.execute(sqlCommand)
         row = cursor.fetchone()
         cursor.close()

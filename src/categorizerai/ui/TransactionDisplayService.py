@@ -3,5 +3,5 @@ from winterboot.Service import Service
 @Service
 class TransactionDisplayService:
 
-    def displayTransaction(self,row):
+    def call(self,row):
         print(row)

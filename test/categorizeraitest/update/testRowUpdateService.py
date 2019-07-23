@@ -3,90 +3,89 @@ from winterboot.Autowired import Autowired
 from winterboot.MockedService import MockedService
 import TestHelper
 
-rowUpdateService = Autowired("rowUpdateService")
+rowUpdateService = Autowired("RowUpdateService")
 
 class Test(unittest.TestCase):
 
     def setUp(self):
         with \
-          Autowired('dbTestData', self),\
-          Autowired('dataTestData', self),\
-          Autowired('updateTestData', self):
-            self.choice = self.updateTestData.choice
+          Autowired('DbTestData', self),\
+          Autowired('DataTestData', self),\
+          Autowired('UpdateTestData', self):
+            self.choice = self.UpdateTestData.choice
 
     def runTest(self, choice):
         with \
-          MockedService('updateDBService', self),\
-          MockedService('rowProviderService', self) as rowProviderService,\
-          MockedService('transactionDisplayService', self),\
-          MockedService('optionPreparatorService', self),\
-          MockedService('choiceObtainerService', self) as choiceObtainerService:
+          MockedService('UpdateDBService', self),\
+          MockedService('RowProviderService', self),\
+          MockedService('TransactionDisplayService', self),\
+          MockedService('OptionPreparatorService', self),\
+          MockedService('ChoiceObtainerService', self):
             
-            rowProviderService.getRowByOid.return_value = self.dbTestData.fetched_row
-            choiceObtainerService.obtainChoice.return_value = choice
+            self.ChoiceObtainerStubs.answerIs(choice)
             
-            rowUpdateService().handleOneRow(
-                self.updateTestData.rowNumber,
-                self.updateTestData.data,
-                self.dbTestData.connection,
-                self.updateTestData.categories)
+            rowUpdateService.call(
+                self.UpdateTestData.rowNumber,
+                self.UpdateTestData.data,
+                self.DbTestData.connection,
+                self.UpdateTestData.categories)
 
     def test_when_no_choice_given_database_is_not_updated(self):
         self.runTest(None)
-        self.updateDBService.updateRow.assert_not_called()
+        self.UpdateDBService.updateRow.assert_not_called()
 
     def test_the_database_row_with_the_the_oid_for_the_row_computed_from_problemoids_is_obtained(self):
         self.runTest(self.choice)
         TestHelper.assertCallParameter(
-            self.updateTestData.oidAsStr,
-            self.rowProviderService.getRowByOid, 1)
+            self.UpdateTestData.oidAsStr,
+            self.RowProviderService.call, 1)
 
     def test_the_database_row_is_obtained_through_the_connections(self):
         self.runTest(self.choice)
         TestHelper.assertCallParameter(
-            self.dbTestData.connection,
-            self.rowProviderService.getRowByOid, 0)
+            self.DbTestData.connection,
+            self.RowProviderService.call, 0)
 
     def test_the_database_row_is_displayed(self):
         self.runTest(self.choice)
         TestHelper.assertCallParameter(
-            self.dbTestData.fetched_row,
-            self.transactionDisplayService.displayTransaction, 0)
+            self.DbTestData.fetched_row,
+            self.TransactionDisplayService.call, 0)
 
     def test_option_preparation_uses_the_row_number(self):
         self.runTest(self.choice)
         TestHelper.assertCallParameter(
-            self.updateTestData.rowNumber,
-            self.optionPreparatorService.prepareOptionsToOffer, 0)
+            self.UpdateTestData.rowNumber,
+            self.OptionPreparatorService.call, 0)
 
     def test_option_preparation_uses_the_data(self):
         self.runTest(self.choice)
         TestHelper.assertCallParameter(
-            self.updateTestData.data,
-            self.optionPreparatorService.prepareOptionsToOffer, 1)
+            self.UpdateTestData.data,
+            self.OptionPreparatorService.call, 1)
 
     def test_option_preparation_uses_the_categories(self):
         self.runTest(self.choice)
         TestHelper.assertCallParameter(
-            self.updateTestData.categories,
-            self.optionPreparatorService.prepareOptionsToOffer, 2)
+            self.UpdateTestData.categories,
+            self.OptionPreparatorService.call, 2)
 
 
     def test_the_choice_passed_to_update_is_the_choice_obtained(self):
         self.runTest(self.choice)
-        TestHelper.assertCallParameter(self.choice, self.updateDBService.updateRow, 3)
+        TestHelper.assertCallParameter(self.choice, self.UpdateDBService.call, 3)
 
     def test_the_oid_passed_to_update_is_the_oid_for_the_row(self):
         self.runTest(self.choice)
         TestHelper.assertCallParameter(
-            self.updateTestData.oidAsStr,
-            self.updateDBService.updateRow, 1)
+            self.UpdateTestData.oidAsStr,
+            self.UpdateDBService.call, 1)
 
     def test_the_database_row_is_updated_through_the_connections(self):
         self.runTest(self.choice)
         TestHelper.assertCallParameter(
-            self.dbTestData.connection,
-            self.updateDBService.updateRow, 0)
+            self.DbTestData.connection,
+            self.UpdateDBService.call, 0)
     
 
 

@@ -21,7 +21,7 @@ setuptools.setup(
           'keras',
           'pandas',
           'psycopg2-binary',
-          'winterboot>=0.3'
+          'winterboot>=0.6'
       ],
      classifiers=[
          "Programming Language :: Python :: 3",

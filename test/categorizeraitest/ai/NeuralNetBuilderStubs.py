@@ -5,5 +5,5 @@ from winterboot.Stubs import Stubs
 class NeuralNetBuilderStubs:
     def behaviour(self, service):
         with\
-                TestDataForStub('aiTestData') as aiTestData:
-            service.buildNeuralNet.return_value = aiTestData.model
+                TestDataForStub('AiTestData') as AiTestData:
+            service.call.return_value = AiTestData.model
