@@ -5,6 +5,6 @@ PROMPT = "choice: "
 @Service
 class ChoiceAskService:
     
-    def call(self):
+    def call(self) -> str:
         answer = input(PROMPT)
         return answer

@@ -1,0 +1,8 @@
+tensorflow
+keras
+pandas
+psycopg2-binary
+winterboot
+setuptools
+wheel
+twine

@@ -1,6 +1,8 @@
 import types
 from winterboot.Autowired import Autowired
 from winterboot.Service import Service
+import pandas
+from categorizerai.ai.AIData import AIData
 
 config = Autowired('Config')()
 numericConverterService = Autowired('NumericConverterService')
@@ -8,7 +10,7 @@ numericConverterService = Autowired('NumericConverterService')
 @Service
 class PrepareDataService:
 
-    def call(self, trainSet, problemSet):
+    def call(self, trainSet:pandas.DataFrame, problemSet: pandas.DataFrame) -> AIData:
         result = types.SimpleNamespace()
         result.max_length = self._calculateMaximumStringLength(trainSet, problemSet)
         result.numberOfOutputNeurons = max(trainSet.loc[:, config.TRAINING_SET_OUTPUT_COLUMN])+1

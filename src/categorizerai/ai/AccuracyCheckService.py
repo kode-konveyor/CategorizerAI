@@ -10,7 +10,7 @@ accuracyErrorDisplayService = Autowired('AccuracyErrorDisplayService')
 @Service
 class AccuracyCheckService:
     
-    def call(self, accuracy):
+    def call(self, accuracy: float) -> None:
 
         displayAccuracyService.call(accuracy)
         if accuracy < config.MIN_ACCURACY:
