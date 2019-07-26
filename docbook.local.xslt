@@ -35,7 +35,7 @@
 				select="concat('Is ', zenta:articledName(//element[@id=current()/@ancestor],'no'),'.')" />
 		</para>
 		<para>
-			<xsl:copy-of select="documentation/(*|text())" />
+			<xsl:apply-templates select="documentation/(*|text())" />
 		</para>
 		<para>
 			<xsl:if test="value">
