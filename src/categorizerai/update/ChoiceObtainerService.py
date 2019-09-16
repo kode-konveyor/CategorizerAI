@@ -8,7 +8,7 @@ choiceAskService = Autowired('ChoiceAskService')
 @Service
 class ChoiceObtainerService:
 
-    def call(self,options):
+    def call(self,options:tuple) -> tuple:
         answer = choiceAskService.call()
         choice = self._computeChoiceFromAnswer(options, answer)
         return choice

@@ -1,5 +1,6 @@
 from winterboot.Autowired import Autowired
 from winterboot.Service import Service
+from categorizerai.ai.AIData import AIData
 
 config = Autowired('Config')()
 optionDisplayService = Autowired('OptionDisplayService')
@@ -7,7 +8,7 @@ optionDisplayService = Autowired('OptionDisplayService')
 @Service
 class OptionPreparatorService:
 
-    def call(self, rowNumber, data, categories):
+    def call(self, rowNumber:int, data:AIData, categories:dict) -> dict:
         answers = self._getAnswersForRow(rowNumber, data)
         options = self._prepareProbableAnswers(categories, answers)
         return options
