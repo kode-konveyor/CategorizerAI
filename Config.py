@@ -6,9 +6,8 @@ from os.path import dirname
 @Service
 class Config(object):
     #input
-    TRAINING_SET_FILE = '/tmp/train_set.csv'
-    PROBLEM_SET_FILE = '/tmp/production_set.csv'
-
+    TRAINING_SET_FILE = 'test/categorizeraitest/train_set.csv'
+    PROBLEM_SET_FILE = 'test/categorizeraitest/problem_set.csv'
     #database
     DATABASE_CONNECTOR = psycopg2
     CONNECTION_STRING = "postgresql://guest:s3cr3t@jobe.kodekonveyor.com/transactions"
@@ -22,7 +21,7 @@ class Config(object):
     BATCH_SIZE=50
     EPOCHS=80
     MIN_PROBABILITY=0.1
-    MIN_ACCURACY=0.7
+    MIN_ACCURACY=0.1 #use at least 0.7 in production
 
     ID_COLUMN_POSITION_IN_CATEGORIES_TABLE = 0
     TRAINING_SET_ID_COLUMN = "id"

@@ -1,5 +1,7 @@
 from winterboot.Autowired import Autowired
 from winterboot.Service import Service
+from categorizerai.ai.AIData import AIData
+import psycopg2
 
 rowProviderService = Autowired('RowProviderService')
 transactionDisplayService = Autowired('TransactionDisplayService')
@@ -10,7 +12,7 @@ choiceObtainerService = Autowired('ChoiceObtainerService')
 @Service
 class RowUpdateService:
 
-    def call(self, rowNumber, data, connection, categories):
+    def call(self, rowNumber:int, data:AIData, connection:psycopg2.extensions.connection, categories:tuple) -> None:
         oidAsStr = str(data.problemOids[rowNumber])
         row = rowProviderService.call(connection, oidAsStr)
         transactionDisplayService.call(row)
