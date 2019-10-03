@@ -12,13 +12,15 @@
 	<xsl:include href="xslt/functions.xslt" />
 
 	<xsl:param name="outputbase" />
+	<xsl:param name="baseuri" />
+
+	<xsl:variable name="testcases">
+		<testcases>
+			<xsl:call-template name="testcases" />
+		</testcases>
+	</xsl:variable>
 
 	<xsl:template match="/">
-		<xsl:variable name="testcases">
-			<testcases>
-				<xsl:call-template name="testcases" />
-			</testcases>
-		</xsl:variable>
 		<xsl:result-document
 			href="{$outputbase}testcases.txt">
 			<xsl:copy-of
@@ -33,26 +35,24 @@
 	<xsl:function name="zenta:writeTestcasesAsText">
 		<xsl:param name="testcases" />
 		<xsl:for-each select="$testcases//testcase">
-			----------------------------------------------------------------------------
-			Behaviour:
-			<xsl:value-of select="@name" />
-			@TestedFeature("
-			<xsl:value-of select="@feature" />
-			")
-			@TestedOperation("
-			<xsl:value-of select="@operation" />
-			")
-			@TestedBehaviour("
-			<xsl:value-of select="@testcase" />
-			")
-			<xsl:if test="@addtestcase">
-				@tested_aspect(
-				<xsl:value-of select="@addtestcase" />
-				)
-			</xsl:if>
-			<xsl:text> </xsl:text>
-			<xsl:value-of select="replace(.,'\\n','\\n  ')" />
-			<xsl:text>
+----------------------------------------------------------------------------
+## <xsl:value-of select="@type"/>: <xsl:value-of select="@name" />
+    @TestedFeature("<xsl:value-of select="@feature" />")
+    @TestedOperation("<xsl:value-of select="@operation" />")
+    @TestedBehaviour("<xsl:value-of select="@testcase" />")
+<xsl:text> </xsl:text>
+
+<xsl:value-of select="replace(doc,'^[ \t\n]+','')" />
+
+You should modify *<xsl:value-of select=".//service/@name"/>*
+
+relevant images:
+
+<xsl:for-each select=".//img">
+[![<xsl:value-of select="@name"/>](<xsl:value-of select="concat($baseuri,'/pics/',@id,'.png')"/>)](<xsl:value-of select="concat($baseuri,'/index.html#',@id)"/>)
+<xsl:value-of select="@name"/>
+</xsl:for-each>
+<xsl:text>
 </xsl:text>
 		</xsl:for-each>
 	</xsl:function>
@@ -60,39 +60,34 @@
 	<xsl:template name="testcases">
 		<xsl:variable name="root" select="/" />
 		<xsl:for-each
-			select="//element[@xsi:type='Business Function']">
+			select="//element[@xsi:type='Policy']">
 			<xsl:variable name="feature" select="." />
 			<xsl:for-each
-				select="zenta:neighboursOnPath(/,$feature,'contains,1')">
+				select="zenta:neighbours(/,$feature,'drives,1')">
 				<xsl:variable name="operation" select="." />
 				<xsl:for-each
-					select="zenta:neighboursOnPath($root,$operation,'does/is done by,1')">
+					select="zenta:neighbours($root,$operation,'determines,1')">
 					<xsl:variable name="testcase" select="." />
 					<testcase
 						name="{concat($feature/@name,'/', $operation/@name, '; ', $testcase/@name)}"
 						feature="{$feature/@name}" operation="{$operation/@name}"
 						testcase="{$testcase/@name}" featureid="{$feature/@id}"
-						operationid="{$operation/@id}" testcaseid="{$testcase/@id}">
-						<xsl:copy-of
-							select="$testcase/documentation/(text()|*)" />
+						operationid="{$operation/@id}" testcaseid="{$testcase/@id}"
+                        type="{$testcase/@xsi:type}">
+                        <doc><xsl:copy-of select="$testcase/documentation/(text()|*)" /></doc>
+                            <xsl:for-each select="zenta:neighbours($root,$testcase,'is implemented by/implements,1')">
+                                <xsl:variable name="service" select="."/>
+                                <xsl:variable name="step" select="zenta:neighbours($root,$service,'is implemented by/implements,2')"/>
+                        <service>
+                                <xsl:copy-of select="@name"/>
+                            <xsl:for-each select="//element[@xsi:type='zenta:ZentaDiagramModel' and (.//child[@zentaElement=$service/@id] or .//child[@zentaElement=$testcase/@id] or .//child[@zentaElement=$step/@id])]">
+                                <img>
+                                    <xsl:copy-of select="@name|@id"/>
+                                </img>
+                            </xsl:for-each>
+                        </service>
+                            </xsl:for-each>
 					</testcase>
-					<xsl:for-each
-						select="zenta:neighboursOnPath($root,$testcase,'is tested by/tests,2,testcase')">
-						<xsl:variable name="addtestcase" select="." />
-						<testcase
-							name="{concat($feature/@name,'/', $operation/@name, '; ', $testcase/@name, '/', $addtestcase/@name)}"
-							feature="{concat(
-                                zenta:neighboursOnPath($root,$feature,'contains/iscontained by,2')/@name,'.',
-                                $feature/@name)}"
-							operation="{$operation/@name}" testcase="{$testcase/@name}"
-							additionaltestcase="{$addtestcase/@name}">
-							<xsl:copy-of
-								select="$testcase/documentation/(text()|*)" />
-							.
-							<xsl:copy-of
-								select="$addtestcase/documentation/(text()|*)" />
-						</testcase>
-					</xsl:for-each>
 				</xsl:for-each>
 			</xsl:for-each>
 		</xsl:for-each>

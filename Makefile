@@ -1,24 +1,29 @@
+export MODEL_BASENAME=categorizerai
+export REPO_NAME=CategorizerAI
+export GITHUB_ORGANIZATION=kode-konveyor
+export SONAR_ORG=$(GITHUB_ORGANIZATION)
+
 all: compile categorizerai.compiled
 
 buildreports: compile
 
-shippable:
-	mkdir -p shippable
-
 shippable/xml:
 	mkdir -p shippable/xml
 
-inputs/categorizerai.issues.xml:
-	mkdir -p inputs
-	tools/getGithubIssues kode-konveyor CategorizerAI f279765590d25bedfc9f08f7fc39a8c39c891711 >inputs/categorizerai.issues.xml
+include /usr/local/toolchain/rules.python
 
-include /usr/share/zenta-tools/model.rules
+#inputs/$(MODEL_BASENAME).issues.xml: shippable/$(MODEL_BASENAME)-testcases.xml
+#	mkdir -p inputs
+#	$(TOOLCHAINDIR)/tools/getGithubIssues >inputs/$(MODEL_BASENAME).issues.xml
 
-compile:
-	./setup.py bdist_wheel
+codedocs: shippable/$(MODEL_BASENAME)-testcases.xml shippable/$(MODEL_BASENAME)-implementedBehaviours.xml shippable/$(MODEL_BASENAME)-implementedBehaviours.html shippable/bugpriorities.xml
+
+shippable/$(MODEL_BASENAME)-testcases.xml: $(MODEL_BASENAME).richescape shippable
+	zenta-xslt-runner -xsl:xslt/generate_test_cases.xslt -s $(MODEL_BASENAME).richescape outputbase=shippable/$(MODEL_BASENAME)-
+
+shippable/$(MODEL_BASENAME)-implementedBehaviours.xml: buildreports shippable $(MODEL_BASENAME).rich
+	zenta-xslt-runner -xsl:xslt/generate-behaviours.xslt -s target/test/javadoc.xml outputbase=shippable/$(MODEL_BASENAME)-
 
 upload: compile
 	python3 -m twine upload dist/*
 
-clean:
-	git clean -fdx
