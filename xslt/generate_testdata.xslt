@@ -14,24 +14,6 @@
 	<xsl:param name="outputbase" />
     <xsl:variable name="doc" select="/"/>
 
-    <xsl:function name="zenta:fullPackageName">
-        <xsl:param name="doc"/>
-        <xsl:param name="package"/>
-        <xsl:for-each select="$package">
-        <xsl:variable name="parent" select="zenta:neighbours($doc,.,'contains,2')"/>
-        <xsl:value-of select="
-            if(@xsi:type = 'Package')
-            then
-                if($parent/@xsi:type = 'Package')
-                then
-                    concat(string-join(zenta:fullPackageName($doc,$parent),''),'.',@name)
-                else
-                    @name
-            else
-                ''
-        "/>
-        </xsl:for-each>
-    </xsl:function>
     <xsl:variable name="testData">
 		<xsl:for-each select="//element[@xsi:type='TestData']">
             <testData>

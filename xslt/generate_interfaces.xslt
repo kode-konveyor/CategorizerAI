@@ -14,44 +14,10 @@
 	<xsl:param name="outputbase" />
     <xsl:variable name="doc" select="/"/>
 
-    <xsl:function name="zenta:fullPackageName">
-        <xsl:param name="doc"/>
-        <xsl:param name="package"/>
-        <xsl:for-each select="$package">
-        <xsl:variable name="parent" select="zenta:neighbours($doc,.,'contains,2')"/>
-        <xsl:value-of select="
-            if(@xsi:type = 'Package')
-            then
-                if($parent/@xsi:type = 'Package')
-                then
-                    concat(string-join(zenta:fullPackageName($doc,$parent),''),'.',@name)
-                else
-                    @name
-            else
-                ''
-        "/>
-        </xsl:for-each>
-    </xsl:function>
-    <xsl:variable name="services">
-		<xsl:for-each select="//element[@xsi:type='Service']">
-            <service>
-                <xsl:copy-of select="@name"/>
-                <xsl:attribute name="type" select="zenta:neighbours(/,.,'results,1;is of/is type of,1')/@name"/>
-                <xsl:attribute name="package" select="zenta:fullPackageName(/,zenta:neighbours(/,.,'is implemented by/implements,2;contains,2'))"/>
-                <xsl:for-each select="zenta:neighbours(/,.,'uses,1')">
-                    <xsl:sort select="value[@ancestorName='referenced as/references']/@name"/>
-                    <param>
-                        <xsl:variable name="businessObject" select="zenta:neighbours($doc,.,'is/is used as parameter,1')"/>
-                        <xsl:copy-of select="$businessObject/value[@ancestorName='is/is used as parameter']/@name"/>
-                        <xsl:attribute name="type" select="$businessObject/value[@ancestorName='is of/is type of']/@name"/>
-                    </param>
-                </xsl:for-each>
-            </service>
-		</xsl:for-each>
-    </xsl:variable>
+    <xsl:variable name="services" select="zenta:gatherServices(/)"/>
 
 	<xsl:template match="/" mode="java">
-        <xsl:for-each select="$services/*">
+        <xsl:for-each select="$services">
         <xsl:variable name="params">
             <xsl:for-each select="param">
                 <param>

@@ -15,111 +15,59 @@
 		mode="varlistentry"> </xsl:template> <xsl:template match="folder[property[@key='display']/@value='hidden']" 
 		mode="varlist"/ -->
 
-	<xsl:function name="zenta:engineErrorDescription">
-		<xsl:param name="entry" />
-		<xsl:param name="other" />
-		<xsl:variable name="testcase"
-			select="$entry/object/testcase" />
-		Unimplemented behaviour.
-		<variablelist>
-			<varlistentry>
-				<term>related feature:</term>
-				<listitem>
-					<para>
-						<ulink url="#{$testcase/@featureid}">
-							<xsl:value-of select="$testcase/@feature" />
-						</ulink>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>related operation:</term>
-				<listitem>
-					<para>
-						<ulink url="#{$testcase/@operationid}">
-							<xsl:value-of select="$testcase/@operation" />
-						</ulink>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>related behaviour:</term>
-				<listitem>
-					<para>
-						<ulink url="#{$testcase/@testcaseid}">
-							<xsl:value-of select="$testcase/@testcase" />
-						</ulink>
-					</para>
-				</listitem>
-			</varlistentry>
-		</variablelist>
-		<xsl:choose>
-			<xsl:when test="$testcase/@featureid">
-				issue markup:
-				<para>
-					Behaviour:
-					<xsl:value-of select="$testcase/@feature" />
-					/
-					<xsl:value-of select="$testcase/@operation" />
-					;
-					<xsl:value-of select="$testcase/@testcase" />
-				</para>
-				<para>
-					@TestedFeature("
-					<xsl:value-of select="$testcase/@feature" />
-					")
-				</para>
-				<para>
-					@TestedOperation("
-					<xsl:value-of select="$testcase/@operation" />
-					")
-				</para>
-				<para>
-					@TestedBehaviour("
-					<xsl:value-of select="$testcase/@testcase" />
-					")
-				</para>
-				<para>
+    <xsl:function name="zenta:fullPackageName">
+        <xsl:param name="doc"/>
+        <xsl:param name="package"/>
+        <xsl:for-each select="$package">
+        <xsl:variable name="parent" select="zenta:neighbours($doc,.,'contains,2')"/>
+        <xsl:value-of select="
+            if(@xsi:type = 'Package')
+            then
+                if($parent/@xsi:type = 'Package')
+                then
+                    concat(string-join(zenta:fullPackageName($doc,$parent),''),'.',@name)
+                else
+                    @name
+            else
+                ''
+        "/>
+        </xsl:for-each>
+    </xsl:function>
 
-					<xsl:value-of select="$testcase" />
-				</para>
-				<para>
-					[Deviation in
-					model](http://adadocs.demokracia.rulez.org/PDEngine/edemo/master/index.html#
-					<xsl:value-of select="zenta:engineErrorId($entry)" />
-					)
-				</para>
-			</xsl:when>
-			<xsl:otherwise>
-				issue markup:
-				[Deviation in
-				model](http://adadocs.demokracia.rulez.org/PDEngine/edemo/master/index.html#
-				<xsl:value-of select="$entry//object/testcase/@name" />
-				)
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:function>
-	<xsl:function name="zenta:engineErrorId">
-		<xsl:param name="entry" />
-		<xsl:variable name="testcase"
-			select="$entry/object/testcase" />
-		<xsl:choose>
-			<xsl:when test="$testcase/@featureid">
-				<xsl:value-of
-					select="concat($testcase/@featureid,'-',$testcase/@operationid,'-',$testcase/@testcaseid)" />
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$testcase/@name" />
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:function>
-	<xsl:function name="zenta:engineErrorTitle">
-		<xsl:param name="entry" />
-		<xsl:variable name="testcase"
-			select="$entry/object/testcase" />
-		<xsl:value-of
-			select="concat('Unimplemented feature',':',$testcase/@name)" />
-	</xsl:function>
+    <xsl:function name="zenta:artifactForBusinessObject">
+        <xsl:param name="doc"/>
+        <xsl:param name="object"/>
+            <xsl:for-each select="zenta:neighbours($doc,$object,'has an example as/is an example of,1')">
+            <artifact>
+                <xsl:variable name="testData" select="zenta:neighbours($doc,.,'contains,2')[@xsi:type='TestData']"/>
+                <xsl:copy-of select="@name"/>
+                <xsl:attribute name="class" select="$testData/@name"/>
+                <xsl:attribute name="package" select="zenta:fullPackageName($doc,zenta:neighbours($doc,$testData,'contains,2')[@xsi:type='Package'])"/>
+            </artifact>
+            </xsl:for-each>
+    </xsl:function>
 
+    <xsl:function name="zenta:gatherServices">
+        <xsl:param name="doc"/>
+		<xsl:for-each select="$doc//element[@xsi:type='Service']">
+            <xsl:variable name="result" select="zenta:neighbours($doc,.,'results,1')"/>
+            <service>
+                <xsl:copy-of select="@name"/>
+                <xsl:attribute name="type" select="$result/value[@ancestorName='is of/is type of']/@name"/>
+                <xsl:attribute name="package" select="zenta:fullPackageName($doc,zenta:neighbours($doc,.,'is implemented by/implements,2;contains,2'))"/>
+                <result>
+                    <xsl:copy-of select="zenta:artifactForBusinessObject($doc,$result)"/>
+                </result>
+                <xsl:for-each select="zenta:neighbours($doc,.,'uses,1')">
+                    <xsl:sort select="value[@ancestorName='referenced as/references']/@name"/>
+                    <param>
+                        <xsl:variable name="businessObject" select="zenta:neighbours($doc,.,'is/is used as parameter,1')"/>
+                        <xsl:copy-of select="$businessObject/value[@ancestorName='is/is used as parameter']/@name"/>
+                        <xsl:attribute name="type" select="$businessObject/value[@ancestorName='is of/is type of']/@name"/>
+                        <xsl:copy-of select="zenta:artifactForBusinessObject($doc,$businessObject)"/>
+                    </param>
+                </xsl:for-each>
+            </service>
+		</xsl:for-each>
+    </xsl:function>
 </xsl:stylesheet>
-

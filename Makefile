@@ -2,6 +2,7 @@ export MODEL_BASENAME=categorizerai
 export REPO_NAME=CategorizerAI
 export GITHUB_ORGANIZATION=kode-konveyor
 export SONAR_ORG=$(GITHUB_ORGANIZATION)
+export LANGUAGE=java
 
 all: compile categorizerai.compiled
 
@@ -11,10 +12,6 @@ shippable/xml:
 	mkdir -p shippable/xml
 
 include /usr/local/toolchain/rules.python
-
-#inputs/$(MODEL_BASENAME).issues.xml: shippable/$(MODEL_BASENAME)-testcases.xml
-#	mkdir -p inputs
-#	$(TOOLCHAINDIR)/tools/getGithubIssues >inputs/$(MODEL_BASENAME).issues.xml
 
 codedocs: shippable/$(MODEL_BASENAME)-testcases.xml shippable/$(MODEL_BASENAME)-implementedBehaviours.xml shippable/$(MODEL_BASENAME)-implementedBehaviours.html shippable/bugpriorities.xml
 
@@ -27,3 +24,13 @@ shippable/$(MODEL_BASENAME)-implementedBehaviours.xml: buildreports shippable $(
 upload: compile
 	python3 -m twine upload dist/*
 
+generated_code: generated_interfaces generated_testdata generated_stubs
+
+generated_interfaces: $(MODEL_BASENAME).rich
+	zenta-xslt-runner -xsl:xslt/generate_interfaces.xslt -s:$(MODEL_BASENAME).rich -im:$(LANGUAGE)
+
+generated_testdata: $(MODEL_BASENAME).rich
+	zenta-xslt-runner -xsl:xslt/generate_testdata.xslt -s:$(MODEL_BASENAME).rich -im:$(LANGUAGE)
+
+generated_stubs: $(MODEL_BASENAME).rich
+	zenta-xslt-runner -xsl:xslt/generate_stubs.xslt -s:$(MODEL_BASENAME).rich -im:$(LANGUAGE)
