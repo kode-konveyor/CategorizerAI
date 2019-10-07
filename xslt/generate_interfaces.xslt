@@ -50,7 +50,7 @@
 		</xsl:for-each>
     </xsl:variable>
 
-	<xsl:template match="/">
+	<xsl:template match="/" mode="java">
         <xsl:for-each select="$services/*">
         <xsl:variable name="params">
             <xsl:for-each select="param">
