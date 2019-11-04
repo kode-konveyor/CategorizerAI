@@ -1,6 +1,8 @@
 from unittest.mock import MagicMock
+from winterboot.TestData import TestData
 
-class AITestData:
+@TestData
+class AiTestData:
     ACCURACY = 0.78
     LOW_ACCURACY = 0.55
     TRAIN_VALUES = "train_values"

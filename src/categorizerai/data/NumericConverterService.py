@@ -1,10 +1,12 @@
 import numpy
 from winterboot.Service import Service
+from categorizerai.types.NdArray import NdArray
+
 
 @Service
 class NumericConverterService:
 
-    def createNumericArrayFromTextArray(self,inputSet, max_length):
+    def call(self,inputSet: NdArray[str], max_length:int) -> NdArray[NdArray[float]]:
         whole = numpy.ndarray((inputSet.shape[0],max_length))
         for i in range(inputSet.shape[0]):
             for j in range(max_length):

@@ -1,51 +1,41 @@
 import unittest
 from winterboot.Autowired import Autowired
 from winterboot.MockedService import MockedService
-from categorizeraitest.update.UpdateTestData import UpdateTestData
-from categorizeraitest.db.DbTestData import DbTestData
 import TestHelper
 
-updateService = Autowired("updateService")
+updateService = Autowired("UpdateService")
 
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.updateTestData = UpdateTestData()
-        self.dbTestData = DbTestData()
 
         with \
-          MockedService('rowUpdateService') as rowUpdateService,\
-          MockedService('connectionService') as connectionService,\
-          MockedService('categoryService') as categoryService:
-            self.rowUpdateService = rowUpdateService
-            self.connectionService = connectionService
-            self.categoryService = categoryService
+          Autowired('UpdateTestData', self),\
+          Autowired('DbTestData', self),\
+          MockedService('RowUpdateService', self),\
+          MockedService('ConnectionService', self),\
+          MockedService('CategoryService', self):
 
-            self.connectionService.obtainConnection.return_value = self.dbTestData.connection
-            self.categoryService.fetchCategories.return_value = self.updateTestData.categories
+            updateService.call(
+                self.UpdateTestData.data)
 
-            updateService.handleUpdates(
-                self.updateTestData.data)
-
-            self.handleOneRowArgs = self.rowUpdateService.handleOneRow
+            self.handleOneRowArgs = self.RowUpdateService.call
 
     def test_handleUpdates_obtains_a_connection(self):
-        self.connectionService.obtainConnection.assert_called_once()
+        self.ConnectionService.call.assert_called_once()
 
     def test_fetches_categories_using_the_connection(self):
-        self.categoryService.fetchCategories.assert_called_once_with(self.dbTestData.connection)
+        self.CategoryService.call.assert_called_once_with(self.DbTestData.connection)
 
-    def test_calls_rowUpdateService_for_all_rows_in_problem_results(self):
-        self.assertEqual(len(self.updateTestData.data.problemResults), self.rowUpdateService.handleOneRow.call_count)
+    def test_calls_RowUpdateService_for_all_rows_in_problem_results(self):
+        self.assertEqual(len(self.UpdateTestData.data.problemResults), self.RowUpdateService.call.call_count)
 
 
     def test_uses_the_row_number_to_update_rows(self):
         TestHelper.assertFunctionParametersAcrossAllcalls(
-            range(len(self.updateTestData.data.problemResults)),
+            range(len(self.UpdateTestData.data.problemResults)),
             self.handleOneRowArgs,
             0)
-
-        
 
 if __name__ == "__main__":
     unittest.main()

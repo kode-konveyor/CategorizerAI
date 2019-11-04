@@ -1,13 +1,12 @@
 import unittest
 
 asserter = unittest.TestCase()
+
 def assertPrintedOn(mockedStdout, printedObject):
     argsList = mockedStdout.write.call_args_list
     asserter.assertEqual(str(printedObject), argsList[0][0][0])
     asserter.assertEqual('\n', argsList[1][0][0])
     asserter.assertEqual(2, len(argsList))
-
-
 
 def callArguments(functionMock, callNumber=0):
     funcArgsForCall = functionMock.call_args_list[callNumber][0]

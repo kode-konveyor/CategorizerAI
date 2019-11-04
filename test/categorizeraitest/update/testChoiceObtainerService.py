@@ -1,29 +1,27 @@
 import unittest
 from winterboot.Autowired import Autowired
-from categorizeraitest.update.UpdateTestData import UpdateTestData
-from categorizeraitest.ui import ChoiceObtainerTestStubs
 from winterboot.MockedService import MockedService
 
-choiceObtainerService = Autowired('choiceObtainerService')
+choiceObtainerService = Autowired('ChoiceObtainerService')
 
 class Test(unittest.TestCase):
 
 
     def setUp(self):
-        testData = UpdateTestData()
-        self.existingChoice = testData.existingChoice
-        self.nonExistingChoice = testData.nonExistingChoice
-        self.regexConformantChoiceInput = testData.regexConformantChoiceInput
-        self.choiceFromRegexConformantInput = testData.choiceFromRegexConformantInput
-        self.regexConformantChoiceInput = testData.regexConformantChoiceInput
-        self.regexConformantChoiceInput = testData.regexConformantChoiceInput
-        self.options = testData.PREPARED_OPTIONS
+        with Autowired('UpdateTestData') as testData:
+            self.existingChoice = testData.existingChoice
+            self.nonExistingChoice = testData.nonExistingChoice
+            self.regexConformantChoiceInput = testData.regexConformantChoiceInput
+            self.choiceFromRegexConformantInput = testData.choiceFromRegexConformantInput
+            self.regexConformantChoiceInput = testData.regexConformantChoiceInput
+            self.regexConformantChoiceInput = testData.regexConformantChoiceInput
+            self.options = testData.PREPARED_OPTIONS
 
     def runTest(self, choice):
-        with MockedService('choiceAskService') as choiceAskService:
-            ChoiceObtainerTestStubs.choiceObtainerStubs(choice)
+        with MockedService('ChoiceAskService', self):
+            self.ChoiceAskStubs.answerIs(choice)
 
-            choice = choiceObtainerService.obtainChoice(self.options)
+            choice = choiceObtainerService.call(self.options)
         return choice
 
     def test_choiceOptionService_returns_the_oid_for_option_corresponding_to_a_number_input(self):

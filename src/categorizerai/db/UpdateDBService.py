@@ -2,20 +2,20 @@ from winterboot.Autowired import Autowired
 from winterboot.Service import Service
 import types
 
-config = Autowired('config')
+config = Autowired('Config')()
 
 @Service
 class UpdateDBService:
     
-    def updateRow(self, connection, oid, row, choice):
+    def call(self, connection, oid, row, choice):
         table = config.figureOutTable(row)
-        sentence = self.createUpdateSentence(oid, choice, table)
+        sentence = self._createUpdateSentence(oid, choice, table)
         cursor = connection.cursor()
         cursor.execute(sentence)
         connection.commit()
         cursor.close()
 
-    def createUpdateSentence(self, oid, choice, table):
+    def _createUpdateSentence(self, oid, choice, table):
         args = types.SimpleNamespace()
         args.table = table
         args.choice = choice

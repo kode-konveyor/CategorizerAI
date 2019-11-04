@@ -1,16 +1,18 @@
 import unittest
 from winterboot.Autowired import Autowired
 import TestHelper
-from categorizerai.ui import AccuracyErrorDisplayService
+from winterboot.MockedService import MockedService
 
-accuracyErrorDisplayService = Autowired("accuracyErrorDisplayService")
+accuracyErrorDisplayService = Autowired("AccuracyErrorDisplayService")
 
 class Test(unittest.TestCase):
 
-    def testdisplayTransaction_prints_the_transaction(self):
-        with unittest.mock.patch('sys.stdout') as mockedStdout:
+    def it_displays_the_transaction(self):
+        with\
+                Autowired('UiTestData', self),\
+                MockedService('sys.stdout') as mockedStdout:
             accuracyErrorDisplayService.displayAccurracyError()
-        TestHelper.assertPrintedOn(mockedStdout, AccuracyErrorDisplayService.ACCURACY_ERROR_MESSAGE)
+        TestHelper.assertPrintedOn(mockedStdout, self.UiTestData.ACCURACY_ERROR_MESSAGE)
 
 
 if __name__ == "__main__":
