@@ -1,24 +1,9 @@
-all: compile categorizerai.compiled
+export MODEL_BASENAME=categorizerai
+export REPO_NAME=CategorizerAi
+export GITHUB_ORGANIZATION=kode-konveyor
+export SONAR_ORG=$(GITHUB_ORGANIZATION)
+export LANGUAGE=java
+export PIP_IGNORE_INSTALLED=0
 
-buildreports: compile
+include /usr/local/toolchain/rules.python
 
-shippable:
-	mkdir -p shippable
-
-shippable/xml:
-	mkdir -p shippable/xml
-
-inputs/categorizerai.issues.xml:
-	mkdir -p inputs
-	tools/getGithubIssues kode-konveyor CategorizerAI f279765590d25bedfc9f08f7fc39a8c39c891711 >inputs/categorizerai.issues.xml
-
-include /usr/share/zenta-tools/model.rules
-
-compile:
-	./setup.py bdist_wheel
-
-upload: compile
-	python3 -m twine upload dist/*
-
-clean:
-	git clean -fdx

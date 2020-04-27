@@ -6,3 +6,4 @@ winterboot
 setuptools
 wheel
 twine
+pytest
